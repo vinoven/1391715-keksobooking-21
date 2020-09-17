@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [mikhail sechin](https://up.htmlacademy.ru/javascript/21/user/1391715).
-* Наставник: [Владимир Коршунов](https://htmlacademy.ru/profile/bekobou).
+* Наставник: [Владимир Коршунов](https://htmlacademy.ru/profile/bekobou). 
 
 ---
 
