@@ -144,6 +144,7 @@ const generateAdvertisementList = () => {
 
 generateAdvertisementList();
 
+document.querySelector('.map').classList.remove('map--faded');
 
 // {
 //   "author": {
