@@ -77,6 +77,9 @@ const MIN_LOCATION_X = 0;
 const MAX_LOCATION_X = 1200;
 const MIN_LOCATION_Y = 130;
 const MAX_LOCATION_Y = 630;
+const PIN_WIDTH = 50;
+const PIN_HEIGHT = 70;
+
 
 const pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 const mapPins = document.querySelector('.map__pins');
@@ -150,13 +153,12 @@ const createPinElements = (advertisementList) => {
   for (let i = 0; i < advertisementList.length; i++) {
     const pinElement = pinTemplate.cloneNode(true);
 
-    const pinOffsetX = window.getComputedStyle(pinElement).getPropertyValue("width");
-    const pinOffsetY = window.getComputedStyle(pinElement).getPropertyValue("height");
+    const pinOffsetX = PIN_WIDTH / 2;
+    const pinOffsetY = PIN_WIDTH / 2;
 
-    pinElement.style = "left: " + advertisementList[i].location.x + pinOffsetX + "px" + "; " + "top: " + advertisementList[i].location.y + pinOffsetY + "px";
+    pinElement.style = "left: " + (advertisementList[i].location.x + pinOffsetX) + "px" + "; " + "top: " + (advertisementList[i].location.y + pinOffsetY) + "px";
     pinElement.querySelector("img").src = advertisementList[i].author.avatar;
     pinElement.querySelector("img").alt = advertisementList[i].offer.title;
-
     fragment.appendChild(pinElement);
   }
   return fragment;
