@@ -13,7 +13,7 @@ const TITLE_LIST = [
   'Интерьер выполнен в цветах земли и неба',
   'Морские просторы',
   'С мечтой об античности'
-]
+];
 
 const PRICE_LIST = [
   1000,
@@ -24,32 +24,32 @@ const PRICE_LIST = [
   6000,
   7000,
   8000
-]
+];
 
 const TYPE_LIST = [
   'palace',
   'flat',
   'house',
   'bungalow'
-]
+];
 
 const ROOM_OPACITY_LIST = [
   1,
   2,
   3
-]
+];
 
 const GUEST_LIST = [
   1,
   2,
   3
-]
+];
 
 const CHECK_TIME = [
   '12:00',
   '13:00',
   '14:00'
-]
+];
 
 const FEATURES_LIST = [
   'wifi',
@@ -58,20 +58,20 @@ const FEATURES_LIST = [
   'washer',
   'elevator',
   'conditioner'
-]
+];
 
 const DESCRIPTION_LIST = [
   'Open from September 2017, TOKYO-W-INN Asakusa offers accommodations just a 4-minute walk from Tawaramachi Station and a 7-minute walk from Asakusa Station.',
   'Free WiFi is available throughout the property. Guests can enjoy the on-site bar. Sensoji Temple is 12 minutes on foot.',
   'There are several convenience stores, restaurants and cafes within a 3-minute walk from the property.',
   'Each room is fitted with a shared bathroom with a bidet and shower, with slippers provided.'
-]
+];
 
 const PHOTO_LINK_LIST = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
-]
+];
 
 const MIN_LOCATION_X = 0;
 const MAX_LOCATION_X = 1200;
@@ -97,7 +97,7 @@ const getAvatarLink = (advertisementCounter) => {
 };
 
 const getRandomItemFromArray = (array) => {
-  const arrayItem = array[Math.floor(Math.random() * array.length)]
+  const arrayItem = array[Math.floor(Math.random() * array.length)];
   return arrayItem;
 };
 
@@ -135,7 +135,7 @@ const generateAdvertisement = (title, price, type, rooms, guests, checkTime, fea
       x: offerLocation[0],
       y: offerLocation[1]
     },
-  }
+  };
   return advertisementItem;
 };
 
@@ -149,16 +149,16 @@ const generateAdvertisementList = () => {
   return advertisementList;
 };
 
-const createPinElements = (advertisementList) => {
-  for (let i = 0; i < advertisementList.length; i++) {
+const createPinElements = (advertisements) => {
+  for (let i = 0; i < advertisements.length; i++) {
     const pinElement = pinTemplate.cloneNode(true);
 
     const pinOffsetX = PIN_WIDTH / 2;
-    const pinOffsetY = PIN_WIDTH / 2;
+    const pinOffsetY = PIN_HEIGHT / 2;
 
-    pinElement.style = "left: " + (advertisementList[i].location.x + pinOffsetX) + "px" + "; " + "top: " + (advertisementList[i].location.y + pinOffsetY) + "px";
-    pinElement.querySelector("img").src = advertisementList[i].author.avatar;
-    pinElement.querySelector("img").alt = advertisementList[i].offer.title;
+    pinElement.style = "left: " + (advertisements[i].location.x + pinOffsetX) + "px" + "; " + "top: " + (advertisements[i].location.y + pinOffsetY) + "px";
+    pinElement.querySelector("img").src = advertisements[i].author.avatar;
+    pinElement.querySelector("img").alt = advertisements[i].offer.title;
     fragment.appendChild(pinElement);
   }
   return fragment;
