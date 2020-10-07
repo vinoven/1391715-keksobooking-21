@@ -166,11 +166,7 @@ const renderMapPins = () => {
   return mapPins.appendChild(fragment);
 };
 
-const removeClass = (element, className) => {
-  element.classList.remove(className);
-};
-
 generateAdvertisementList();
-removeClass(map, 'map--faded');
+map.classList.remove('map--faded');
 createPinElements(advertisementList);
 renderMapPins();
