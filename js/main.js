@@ -111,7 +111,7 @@ const getOfferLocation = () => {
   return offerLocation;
 };
 
-const generateAdvertisement = (title, price, type, rooms, guests, checkTime, features, description, photos, advertisementCounter) => {
+const createAd = (advertisementCounter) => {
   getOfferLocation();
   advertisementItem = {
     author: {
@@ -119,17 +119,17 @@ const generateAdvertisement = (title, price, type, rooms, guests, checkTime, fea
     },
 
     offer: {
-      title: getRandomItemFromArray(title),
+      title: getRandomItemFromArray(TITLE_LIST),
       address: offerLocation.join(', '),
-      price: getRandomItemFromArray(price),
-      type: getRandomItemFromArray(type),
-      rooms: getRandomItemFromArray(rooms),
-      guests: getRandomItemFromArray(guests),
-      checkin: getRandomItemFromArray(checkTime),
-      checkout: getRandomItemFromArray(checkTime),
-      features: getRandomItemFromArray(features),
-      description: getRandomItemFromArray(description),
-      photos: getRandomItemFromArray(photos)
+      price: getRandomItemFromArray(PRICE_LIST),
+      type: getRandomItemFromArray(TYPE_LIST),
+      rooms: getRandomItemFromArray(ROOM_OPACITY_LIST),
+      guests: getRandomItemFromArray(GUEST_LIST),
+      checkin: getRandomItemFromArray(CHECK_TIME),
+      checkout: getRandomItemFromArray(CHECK_TIME),
+      features: getRandomItemFromArray(FEATURES_LIST),
+      description: getRandomItemFromArray(DESCRIPTION_LIST),
+      photos: getRandomItemFromArray(PHOTO_LINK_LIST)
     },
 
     location: {
@@ -144,7 +144,7 @@ const generateAdvertisementList = () => {
 
   for (let i = 0; i < ADVERTISEMENT_QUANTITY; i++) {
     let advertisementCounter = i + 1;
-    generateAdvertisement(TITLE_LIST, PRICE_LIST, TYPE_LIST, ROOM_OPACITY_LIST, GUEST_LIST, CHECK_TIME, FEATURES_LIST, DESCRIPTION_LIST, PHOTO_LINK_LIST, advertisementCounter);
+    createAd(advertisementCounter);
     advertisementList.push(advertisementItem);
   }
   return advertisementList;
