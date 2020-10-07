@@ -86,9 +86,6 @@ const pinTemplate = document.querySelector('#pin').content.querySelector('.map__
 const mapPins = document.querySelector('.map__pins');
 const map = document.querySelector('.map');
 
-let offerLocation = [];
-let advertisementList = [];
-let advertisementItem = {};
 let fragment = document.createDocumentFragment();
 
 const getAvatarLink = (advertisementCounter) => {
@@ -107,13 +104,16 @@ const getRandomIntegerFromRange = (min, max) => {
 };
 
 const getOfferLocation = () => {
+  let offerLocation = [];
+
   offerLocation = [getRandomIntegerFromRange(MIN_LOCATION_X, MAX_LOCATION_X), getRandomIntegerFromRange(MIN_LOCATION_Y, MAX_LOCATION_Y)];
   return offerLocation;
 };
 
 const createAd = (advertisementCounter) => {
-  getOfferLocation();
-  advertisementItem = {
+  let adItem = {};
+  const offerLocation = getOfferLocation();
+  adItem = {
     author: {
       avatar: getAvatarLink(advertisementCounter)
     },
@@ -137,17 +137,17 @@ const createAd = (advertisementCounter) => {
       y: offerLocation[1]
     },
   };
-  return advertisementItem;
+  return adItem;
 };
 
-const generateAdvertisementList = () => {
+const createAds = () => {
+  let ads = [];
 
   for (let i = 0; i < ADVERTISEMENT_QUANTITY; i++) {
     let advertisementCounter = i + 1;
-    createAd(advertisementCounter);
-    advertisementList.push(advertisementItem);
+    ads.push(createAd(advertisementCounter));
   }
-  return advertisementList;
+  return ads;
 };
 
 const createPinElements = (advertisements) => {
@@ -166,7 +166,7 @@ const renderMapPins = () => {
   return mapPins.appendChild(fragment);
 };
 
-generateAdvertisementList();
+createAds();
 map.classList.remove('map--faded');
-createPinElements(advertisementList);
+// createPinElements(advertisementList);
 renderMapPins();
