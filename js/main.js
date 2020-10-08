@@ -87,7 +87,7 @@ const mapPins = document.querySelector('.map__pins');
 const map = document.querySelector('.map');
 
 const getAvatarLink = (advertisementCounter) => {
-  let avatarCounter = ('0' + advertisementCounter).slice(-2); // Счетчик аватаров для последующей генерации строки. slice используем для того, что бы отсекать ведущий ноль при значении avatarCounter >= 10
+  let avatarCounter = ('0' + advertisementCounter);
   let avatarLink = AVATAR_BASE_LINK + avatarCounter + '.png';
   return avatarLink;
 };
@@ -148,8 +148,6 @@ const createAds = () => {
   return ads;
 };
 
-const generatedAds = createAds();
-
 const createPinElement = (element) => {
   const pinElement = pinTemplate.cloneNode(true);
   pinElement.style = "left: " + (element.location.x + PIN_OFFSET_X) + "px" + "; " + "top: " + (element.location.y + PIN_OFFSET_Y) + "px";
@@ -167,4 +165,5 @@ const createPinsFragment = (adsArray) => {
 };
 
 map.classList.remove('map--faded');
+const generatedAds = createAds();
 mapPins.appendChild(createPinsFragment(generatedAds));
