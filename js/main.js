@@ -33,6 +33,13 @@ const TYPE_LIST = [
   'bungalow'
 ];
 
+const TYPE_MAPPING = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало'
+};
+
 const ROOM_OPACITY_LIST = [
   1,
   2,
@@ -164,6 +171,42 @@ const createPinsFragment = (adsArray) => {
   return fragment;
 };
 
+
 map.classList.remove('map--faded');
 const generatedAds = createAds();
 mapPins.appendChild(createPinsFragment(generatedAds));
+
+const createAdCard = (adsArray) => {
+  const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  const cardElement = cardTemplate.cloneNode(true);
+  const cardItem = adsArray[0];
+
+  cardElement.querySelector('.popup__title').textContent = cardItem.offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = cardItem.offer.address;
+  cardElement.querySelector('.popup__text--price').textContent = cardItem.offer.price + '₽/ночь';
+  cardElement.querySelector('.popup__type').textContent = TYPE_MAPPING[cardItem.offer.type];
+  cardElement.querySelector('.popup__text--capacity').textContent = cardItem.offer.rooms + ' комнаты для ' + cardItem.offer.guests + 'гостей';
+  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + cardItem.offer.checkin + ', выезд до ' + cardItem.offer.checkout;
+  cardElement.querySelector('.popup__features').textContent = cardItem.offer.features;
+  cardElement.querySelector('.popup__description').textContent = cardItem.offer.description;
+  cardElement.querySelector('.popup__photos').querySelector('img').src = cardItem.offer.photos;
+  cardElement.querySelector('.popup__avatar').src = cardItem.author.avatar;
+
+  console.log(cardElement);
+};
+
+createAdCard(generatedAds);
+
+// На основе первого по порядку элемента из сгенерированного массива и шаблона #card создайте DOM-элемент объявления (карточка объявления), заполните его данными из объекта:
+
+// Выведите заголовок объявления offer.title в заголовок .popup__title.
+// Выведите адрес offer.address в блок .popup__text--address.
+// Выведите цену offer.price в блок .popup__text--price строкой вида {{offer.price}}₽/ночь. Например, 5200₽/ночь.
+// В блок .popup__type выведите тип жилья offer.type: Квартира для flat, Бунгало для bungalow, Дом для house, Дворец для palace.
+// Выведите количество гостей и комнат offer.rooms и offer.guests в блок .popup__text--capacity строкой вида {{offer.rooms}} комнаты для {{offer.guests}} гостей. Например, 2 комнаты для 3 гостей.
+// Время заезда и выезда offer.checkin и offer.checkout в блок .popup__text--time строкой вида Заезд после {{offer.checkin}}, выезд до {{offer.checkout}}. Например, заезд после 14:00, выезд до 12:00.
+// В список .popup__features выведите все доступные удобства в объявлении.
+// В блок .popup__description выведите описание объекта недвижимости offer.description.
+// В блок .popup__photos выведите все фотографии из списка offer.photos. Каждая из строк массива photos должна записываться как src соответствующего изображения.
+// Замените src у аватарки пользователя — изображения, которое записано в .popup__avatar — на значения поля author.avatar отрисовываемого объекта.
+// Если данных для заполнения не хватает, соответствующий блок в карточке скрывается.
