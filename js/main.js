@@ -86,8 +86,6 @@ const pinTemplate = document.querySelector('#pin').content.querySelector('.map__
 const mapPins = document.querySelector('.map__pins');
 const map = document.querySelector('.map');
 
-let fragment = document.createDocumentFragment();
-
 const getAvatarLink = (advertisementCounter) => {
   let avatarCounter = ('0' + advertisementCounter).slice(-2); // Счетчик аватаров для последующей генерации строки. slice используем для того, что бы отсекать ведущий ноль при значении avatarCounter >= 10
   let avatarLink = AVATAR_BASE_LINK + avatarCounter + '.png';
@@ -150,23 +148,23 @@ const createAds = () => {
   return ads;
 };
 
-const createPinElements = (advertisements) => {
-  for (let i = 0; i < advertisements.length; i++) {
-    const pinElement = pinTemplate.cloneNode(true);
+const generatedAds = createAds();
 
-    pinElement.style = "left: " + (advertisements[i].location.x + PIN_OFFSET_X) + "px" + "; " + "top: " + (advertisements[i].location.y + PIN_OFFSET_Y) + "px";
-    pinElement.querySelector("img").src = advertisements[i].author.avatar;
-    pinElement.querySelector("img").alt = advertisements[i].offer.title;
-    fragment.appendChild(pinElement);
+const createPinElement = (element) => {
+  const pinElement = pinTemplate.cloneNode(true);
+  pinElement.style = "left: " + (element.location.x + PIN_OFFSET_X) + "px" + "; " + "top: " + (element.location.y + PIN_OFFSET_Y) + "px";
+  pinElement.querySelector("img").src = element.author.avatar;
+  pinElement.querySelector("img").alt = element.offer.title;
+  return pinElement;
+};
+
+const createPinsFragment = (adsArray) => {
+  let fragment = document.createDocumentFragment();
+  for (let i = 0; i < adsArray.length; i++) {
+    fragment.appendChild(createPinElement(adsArray[i]));
   }
   return fragment;
 };
 
-const renderMapPins = () => {
-  return mapPins.appendChild(fragment);
-};
-
-createAds();
 map.classList.remove('map--faded');
-// createPinElements(advertisementList);
-renderMapPins();
+mapPins.appendChild(createPinsFragment(generatedAds));
