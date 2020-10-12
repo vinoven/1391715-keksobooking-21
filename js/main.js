@@ -93,6 +93,7 @@ const pinTemplate = document.querySelector('#pin').content.querySelector('.map__
 const mapFilters = document.querySelector('.map__filters-container');
 const mapPins = document.querySelector('.map__pins');
 const map = document.querySelector('.map');
+const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 const getAvatarLink = (advertisementCounter) => {
   let avatarCounter = ('0' + advertisementCounter);
@@ -183,13 +184,17 @@ const createPinsFragment = (adsArray) => {
   return fragment;
 };
 
+const removeElements = (elements) => {
+  while (elements.length > 0) {
+    elements[0].remove();
+  }
+};
+
 const fillCardFeatures = (ad, cardFeatures) => {
   const generatedFeatures = ad.offer.features;
-  const defaultFeturesElements = cardFeatures.children;
+  const defaultFeaturesElements = cardFeatures.children;
 
-  while (defaultFeturesElements.length > 0) {
-    defaultFeturesElements[0].remove();
-  }
+  removeElements(defaultFeaturesElements);
 
   for (let i = 0; i < generatedFeatures.length; i++) {
     cardFeatures.insertAdjacentHTML('beforeend', '<li></li>');
@@ -203,9 +208,7 @@ const fillCardPhotos = (ad, cardPhotos) => {
   const generatedPhotos = ad.offer.photos;
   const defaultPhotosElements = cardPhotos.children;
 
-  while (defaultPhotosElements.length > 0) {
-    defaultPhotosElements[0].remove();
-  }
+  removeElements(defaultPhotosElements);
 
   for (let i = 0; i < generatedPhotos.length; i++) {
     cardPhotos.insertAdjacentHTML('beforeend', '<img src="" class="popup__photo" width="45" height="40" alt="Фотография жилья">');
@@ -215,7 +218,6 @@ const fillCardPhotos = (ad, cardPhotos) => {
 };
 
 const createAdCard = (ad) => {
-  const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   const cardElement = cardTemplate.cloneNode(true);
 
   const cardTitle = cardElement.querySelector('.popup__title');
