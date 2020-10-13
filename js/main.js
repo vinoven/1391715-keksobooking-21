@@ -33,6 +33,13 @@ const TYPE_LIST = [
   'bungalow'
 ];
 
+const TYPE_MAPPING = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало'
+};
+
 const ROOM_OPACITY_LIST = [
   1,
   2,
@@ -83,8 +90,10 @@ const PIN_OFFSET_X = PIN_WIDTH / 2;
 const PIN_OFFSET_Y = PIN_HEIGHT / 2;
 
 const pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+const mapFilters = document.querySelector('.map__filters-container');
 const mapPins = document.querySelector('.map__pins');
 const map = document.querySelector('.map');
+const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 const getAvatarLink = (advertisementCounter) => {
   let avatarCounter = ('0' + advertisementCounter);
@@ -95,6 +104,17 @@ const getAvatarLink = (advertisementCounter) => {
 const getRandomItemFromArray = (array) => {
   const arrayItem = array[Math.floor(Math.random() * array.length)];
   return arrayItem;
+};
+
+const getMultipleRandomItemsFromArray = (array) => {
+  let generatedArray = [];
+  for (let i = 0; i < array.length; i++) {
+    let checker = Math.round(Math.random());
+    if (checker) {
+      generatedArray.push(array[i]);
+    }
+  }
+  return generatedArray;
 };
 
 const getRandomIntegerFromRange = (min, max) => {
@@ -125,9 +145,9 @@ const createAd = (advertisementCounter) => {
       guests: getRandomItemFromArray(GUEST_LIST),
       checkin: getRandomItemFromArray(CHECK_TIME),
       checkout: getRandomItemFromArray(CHECK_TIME),
-      features: getRandomItemFromArray(FEATURES_LIST),
+      features: getMultipleRandomItemsFromArray(FEATURES_LIST),
       description: getRandomItemFromArray(DESCRIPTION_LIST),
-      photos: getRandomItemFromArray(PHOTO_LINK_LIST)
+      photos: PHOTO_LINK_LIST
     },
 
     location: {
@@ -164,6 +184,116 @@ const createPinsFragment = (adsArray) => {
   return fragment;
 };
 
+const removeElements = (elements) => {
+  while (elements.length > 0) {
+    elements[0].remove();
+  }
+};
+
+const fillCardFeatures = (ad, cardFeatures) => {
+  const generatedFeatures = ad.offer.features;
+  const defaultFeaturesElements = cardFeatures.children;
+
+  removeElements(defaultFeaturesElements);
+
+  for (let i = 0; i < generatedFeatures.length; i++) {
+    cardFeatures.insertAdjacentHTML('beforeend', '<li></li>');
+    const featuresLastChild = cardFeatures.lastChild;
+    featuresLastChild.classList.add('popup__feature', 'popup__feature--' + generatedFeatures[i]);
+    featuresLastChild.textContent = generatedFeatures[i];
+  }
+};
+
+const fillCardPhotos = (ad, cardPhotos) => {
+  const generatedPhotos = ad.offer.photos;
+  const defaultPhotosElements = cardPhotos.children;
+
+  removeElements(defaultPhotosElements);
+
+  for (let i = 0; i < generatedPhotos.length; i++) {
+    cardPhotos.insertAdjacentHTML('beforeend', '<img src="" class="popup__photo" width="45" height="40" alt="Фотография жилья">');
+    const photosLastChild = cardPhotos.lastChild;
+    photosLastChild.src = generatedPhotos[i];
+  }
+};
+
+const createAdCard = (ad) => {
+  const cardElement = cardTemplate.cloneNode(true);
+
+  const cardTitle = cardElement.querySelector('.popup__title');
+  if (ad.offer.title) {
+    cardTitle.textContent = ad.offer.title;
+  } else {
+    cardTitle.remove();
+  }
+
+  const cardAddress = cardElement.querySelector('.popup__text--address');
+  if (ad.offer.address) {
+    cardAddress.textContent = ad.offer.address;
+  } else {
+    cardAddress.remove();
+  }
+
+  const cardPrice = cardElement.querySelector('.popup__text--price');
+  if (ad.offer.price) {
+    cardPrice.textContent = ad.offer.price + '₽/ночь';
+  } else {
+    cardPrice.remove();
+  }
+
+  const cardType = cardElement.querySelector('.popup__type');
+  if (ad.offer.price) {
+    cardType.textContent = TYPE_MAPPING[ad.offer.type];
+  } else {
+    cardType.remove();
+  }
+
+  const cardCapacity = cardElement.querySelector('.popup__text--capacity');
+  if (ad.offer.rooms && ad.offer.guests) {
+    cardCapacity.textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
+  } else {
+    cardCapacity.remove();
+  }
+
+  const cardTime = cardElement.querySelector('.popup__text--time');
+  if (ad.offer.checkin && ad.offer.checkout) {
+    cardTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+  } else {
+    cardTime.remove();
+  }
+
+  const cardFeatures = cardElement.querySelector('.popup__features');
+  if (ad.offer.features) {
+    fillCardFeatures(ad, cardFeatures);
+  } else {
+    cardFeatures.remove();
+  }
+
+  const cardDesc = cardElement.querySelector('.popup__description');
+  if (ad.offer.description) {
+    cardDesc.textContent = ad.offer.description;
+  } else {
+    cardDesc.remove();
+  }
+
+  const cardPhotos = cardElement.querySelector('.popup__photos');
+  if (ad.offer.photos) {
+    fillCardPhotos(ad, cardPhotos);
+  } else {
+    cardPhotos.remove();
+  }
+
+  const cardAvatar = cardElement.querySelector('.popup__avatar');
+  if (ad.author.avatar) {
+    cardAvatar.src = ad.author.avatar;
+  } else {
+    cardAvatar.remove();
+  }
+
+  return cardElement;
+};
+
 map.classList.remove('map--faded');
 const generatedAds = createAds();
 mapPins.appendChild(createPinsFragment(generatedAds));
+mapFilters.insertAdjacentElement('beforebegin', createAdCard(generatedAds[0]));
