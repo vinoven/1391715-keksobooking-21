@@ -91,6 +91,8 @@ const adForm = document.querySelector('.ad-form');
 const adFormFieldsets = adForm.querySelectorAll('fieldset');
 const adFormAddressField = adForm.querySelector('#address');
 const mapFiltersFormElements = mapFilters.querySelector('.map__filters').children;
+const guestNumberSelect = adForm.querySelector('#capacity');
+const roomNumberSelect = adForm.querySelector('#room_number');
 
 const getAvatarLink = (advertisementCounter) => {
   let avatarCounter = ('0' + advertisementCounter);
@@ -309,22 +311,19 @@ const activatePage = () => {
   enableFormElements(mapFiltersFormElements);
 };
 
-const onMainMapPinEnterPress = (evt) => {
-  if (evt.key === 'Enter') {
+const onMainMapPinMouseDown = (evt) => {
+  if (evt.button === 0) {
     activatePage();
+    fillAddressField();
   }
 };
 
-// Events
-
-mainMapPin.addEventListener('keydown', onMainMapPinEnterPress);
-
-mainMapPin.addEventListener('mousedown', function (evt) {
-  if (evt.button === 0) {
+const onMainMapPinEnterPress = (evt) => {
+  if (evt.key === 'Enter') {
     activatePage();
+    fillAddressField();
   }
-  fillAddressField();
-});
+};
 
 const getMainPinPointerPosition = () => {
   const mainPinWidth = parseInt(getComputedStyle(mainMapPin).getPropertyValue('width'), 10);
@@ -345,6 +344,26 @@ const fillAddressField = () => {
   adFormAddressField.value = getMainPinPointerPosition();
 };
 
+const guestsNumberValidation = () => {
+
+  if (roomNumberSelect.value !== '100' && guestNumberSelect.value > roomNumberSelect.value) {
+    guestNumberSelect.setCustomValidity('Гостей не должно быть больше, чем количества комнат');
+  } else if (roomNumberSelect.value === '100' && guestNumberSelect.value !== '0') {
+    guestNumberSelect.setCustomValidity('100 комнат недоступны для гостей');
+  } else if (roomNumberSelect.value !== '100' && guestNumberSelect.value === '0') {
+    guestNumberSelect.setCustomValidity('Укажите количество гостей');
+  } else {
+    guestNumberSelect.setCustomValidity('');
+  }
+  return guestNumberSelect.reportValidity();
+};
+
+// Events
+
+mainMapPin.addEventListener('keydown', onMainMapPinEnterPress);
+mainMapPin.addEventListener('mousedown', onMainMapPinMouseDown);
+guestNumberSelect.addEventListener('input', guestsNumberValidation);
+
 // Main
 
 const generatedAds = createAds();
@@ -353,4 +372,3 @@ mapPins.appendChild(createPinsFragment(generatedAds));
 disableFormElements(adFormFieldsets);
 disableFormElements(mapFiltersFormElements);
 adFormAddressField.value = getMainPinPointerPosition();
-
