@@ -15,16 +15,8 @@ const TITLE_LIST = [
   'С мечтой об античности'
 ];
 
-const PRICE_LIST = [
-  1000,
-  2000,
-  3000,
-  4000,
-  5000,
-  6000,
-  7000,
-  8000
-];
+const MIN_AD_PRICE = 0;
+const MAX_AD_PRICE = 1000000;
 
 const TYPE_LIST = [
   'palace',
@@ -144,7 +136,7 @@ const createAd = (advertisementCounter) => {
     offer: {
       title: getRandomItemFromArray(TITLE_LIST),
       address: offerLocation.join(', '),
-      price: getRandomItemFromArray(PRICE_LIST),
+      price: getRandomIntegerFromRange(MIN_AD_PRICE, MAX_AD_PRICE),
       type: getRandomItemFromArray(TYPE_LIST),
       rooms: getRandomItemFromArray(ROOM_OPACITY_LIST),
       guests: getRandomItemFromArray(GUEST_LIST),
@@ -331,8 +323,7 @@ mainMapPin.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     activatePage();
   }
-
-  adFormAddressField.value = getMainPinPointerPosition();
+  fillAddressField();
 });
 
 const getMainPinPointerPosition = () => {
@@ -347,6 +338,11 @@ const getMainPinPointerPosition = () => {
   const mainPinPointerPosition = [positionX, positionY];
 
   return mainPinPointerPosition;
+};
+
+const fillAddressField = () => {
+  adFormAddressField.setAttribute('disabled', '');
+  adFormAddressField.value = getMainPinPointerPosition();
 };
 
 // Main
