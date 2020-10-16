@@ -347,7 +347,7 @@ const fillAddressField = () => {
 const guestsNumberValidation = () => {
 
   if (roomNumberSelect.value !== '100' && guestNumberSelect.value > roomNumberSelect.value) {
-    guestNumberSelect.setCustomValidity('Гостей не должно быть больше, чем количества комнат');
+    guestNumberSelect.setCustomValidity('Гостей не должно быть больше количества комнат');
   } else if (roomNumberSelect.value === '100' && guestNumberSelect.value !== '0') {
     guestNumberSelect.setCustomValidity('100 комнат недоступны для гостей');
   } else if (roomNumberSelect.value !== '100' && guestNumberSelect.value === '0') {
