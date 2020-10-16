@@ -84,16 +84,21 @@ const MIN_LOCATION_X = 0;
 const MAX_LOCATION_X = 1200;
 const MIN_LOCATION_Y = 130;
 const MAX_LOCATION_Y = 630;
-const PIN_WIDTH = 50;
-const PIN_HEIGHT = 70;
-const PIN_OFFSET_X = PIN_WIDTH / 2;
-const PIN_OFFSET_Y = PIN_HEIGHT / 2;
 
 const pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-// const mapFilters = document.querySelector('.map__filters-container');
+const mapFilters = document.querySelector('.map__filters-container');
 const mapPins = document.querySelector('.map__pins');
+const mainMapPin = mapPins.querySelector('.map__pin--main');
+const mainPinPointerSize = {
+  width: 10,
+  height: 22
+};
 const map = document.querySelector('.map');
 // const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+const adForm = document.querySelector('.ad-form');
+const adFormFieldsets = adForm.querySelectorAll('fieldset');
+const adFormAddressField = adForm.querySelector('#address');
+const mapFiltersFormElements = mapFilters.querySelector('.map__filters').children;
 
 const getAvatarLink = (advertisementCounter) => {
   let avatarCounter = ('0' + advertisementCounter);
@@ -170,7 +175,7 @@ const createAds = () => {
 
 const createPinElement = (element) => {
   const pinElement = pinTemplate.cloneNode(true);
-  pinElement.style = "left: " + (element.location.x + PIN_OFFSET_X) + "px" + "; " + "top: " + (element.location.y + PIN_OFFSET_Y) + "px";
+  pinElement.style = "left: " + element.location.x + "px" + "; " + "top: " + element.location.y + "px";
   pinElement.querySelector("img").src = element.author.avatar;
   pinElement.querySelector("img").alt = element.offer.title;
   return pinElement;
@@ -293,7 +298,63 @@ const createPinsFragment = (adsArray) => {
 //   return cardElement;
 // };
 
-map.classList.remove('map--faded');
+const disableFormElements = (elements) => {
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].setAttribute('disabled', '');
+  }
+};
+
+const enableFormElements = (elements) => {
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].removeAttribute('disabled');
+  }
+};
+
+const activatePage = () => {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  enableFormElements(adFormFieldsets);
+  enableFormElements(mapFiltersFormElements);
+};
+
+const onMainMapPinEnterPress = (evt) => {
+  if (evt.key === 'Enter') {
+    activatePage();
+  }
+};
+
+// Events
+
+mainMapPin.addEventListener('keydown', onMainMapPinEnterPress);
+
+mainMapPin.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    activatePage();
+  }
+
+  adFormAddressField.value = getMainPinPointerPosition();
+});
+
+const getMainPinPointerPosition = () => {
+  const mainPinWidth = parseInt(getComputedStyle(mainMapPin).getPropertyValue('width'), 10);
+  const mainPinHeight = parseInt(getComputedStyle(mainMapPin).getPropertyValue('height'), 10);
+  const mainPinLeft = parseInt(getComputedStyle(mainMapPin).getPropertyValue('left'), 10);
+  const mainPinTop = parseInt(getComputedStyle(mainMapPin).getPropertyValue('top'), 10);
+
+  const positionX = Math.round(mainPinLeft + mainPinWidth / 2);
+  const positionY = Math.round((map.classList.contains('map--faded')) ? mainPinTop + mainPinHeight / 2 : mainPinTop + mainPinHeight + mainPinPointerSize.height);
+
+  const mainPinPointerPosition = [positionX, positionY];
+
+  return mainPinPointerPosition;
+};
+
+// Main
+
 const generatedAds = createAds();
 mapPins.appendChild(createPinsFragment(generatedAds));
 // mapFilters.insertAdjacentElement('beforebegin', createAdCard(generatedAds[0]));
+disableFormElements(adFormFieldsets);
+disableFormElements(mapFiltersFormElements);
+adFormAddressField.value = getMainPinPointerPosition();
+
