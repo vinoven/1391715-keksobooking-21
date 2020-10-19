@@ -15,16 +15,8 @@ const TITLE_LIST = [
   'С мечтой об античности'
 ];
 
-const PRICE_LIST = [
-  1000,
-  2000,
-  3000,
-  4000,
-  5000,
-  6000,
-  7000,
-  8000
-];
+const MIN_AD_PRICE = 0;
+const MAX_AD_PRICE = 1000000;
 
 const TYPE_LIST = [
   'palace',
@@ -84,16 +76,23 @@ const MIN_LOCATION_X = 0;
 const MAX_LOCATION_X = 1200;
 const MIN_LOCATION_Y = 130;
 const MAX_LOCATION_Y = 630;
-const PIN_WIDTH = 50;
-const PIN_HEIGHT = 70;
-const PIN_OFFSET_X = PIN_WIDTH / 2;
-const PIN_OFFSET_Y = PIN_HEIGHT / 2;
 
 const pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 const mapFilters = document.querySelector('.map__filters-container');
 const mapPins = document.querySelector('.map__pins');
+const mainMapPin = mapPins.querySelector('.map__pin--main');
+const mainPinPointerSize = {
+  width: 10,
+  height: 22
+};
 const map = document.querySelector('.map');
 const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+const adForm = document.querySelector('.ad-form');
+const adFormFieldsets = adForm.querySelectorAll('fieldset');
+const adFormAddressField = adForm.querySelector('#address');
+const mapFiltersFormElements = mapFilters.querySelector('.map__filters').children;
+const guestNumberSelect = adForm.querySelector('#capacity');
+const roomNumberSelect = adForm.querySelector('#room_number');
 
 const getAvatarLink = (advertisementCounter) => {
   let avatarCounter = ('0' + advertisementCounter);
@@ -139,7 +138,7 @@ const createAd = (advertisementCounter) => {
     offer: {
       title: getRandomItemFromArray(TITLE_LIST),
       address: offerLocation.join(', '),
-      price: getRandomItemFromArray(PRICE_LIST),
+      price: getRandomIntegerFromRange(MIN_AD_PRICE, MAX_AD_PRICE),
       type: getRandomItemFromArray(TYPE_LIST),
       rooms: getRandomItemFromArray(ROOM_OPACITY_LIST),
       guests: getRandomItemFromArray(GUEST_LIST),
@@ -170,7 +169,8 @@ const createAds = () => {
 
 const createPinElement = (element) => {
   const pinElement = pinTemplate.cloneNode(true);
-  pinElement.style = "left: " + (element.location.x + PIN_OFFSET_X) + "px" + "; " + "top: " + (element.location.y + PIN_OFFSET_Y) + "px";
+  pinElement.style.left = element.location.x + "px";
+  pinElement.style.top = element.location.y + "px";
   pinElement.querySelector("img").src = element.author.avatar;
   pinElement.querySelector("img").alt = element.offer.title;
   return pinElement;
@@ -293,7 +293,76 @@ const createAdCard = (ad) => {
   return cardElement;
 };
 
-map.classList.remove('map--faded');
+const toggleDisableAttrForElements = (elements, isDisabled) => {
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].disabled = isDisabled;
+  }
+};
+
+const activatePage = () => {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  toggleDisableAttrForElements(adFormFieldsets, false);
+  toggleDisableAttrForElements(mapFiltersFormElements, false);
+  mapPins.appendChild(createPinsFragment(generatedAds));
+  mapFilters.insertAdjacentElement('beforebegin', createAdCard(generatedAds[0]));
+  fillAddressField();
+};
+
+const onMainMapPinMouseDown = (evt) => {
+  if (evt.button === 0) {
+    activatePage();
+  }
+};
+
+const onMainMapPinEnterPress = (evt) => {
+  if (evt.key === 'Enter') {
+    activatePage();
+  }
+};
+
+const getMainPinPointerPosition = () => {
+  const mainPinWidth = parseInt(getComputedStyle(mainMapPin).getPropertyValue('width'), 10);
+  const mainPinHeight = parseInt(getComputedStyle(mainMapPin).getPropertyValue('height'), 10);
+  const mainPinLeft = parseInt(getComputedStyle(mainMapPin).getPropertyValue('left'), 10);
+  const mainPinTop = parseInt(getComputedStyle(mainMapPin).getPropertyValue('top'), 10);
+
+  const positionX = Math.round(mainPinLeft + mainPinWidth / 2);
+  const positionY = Math.round((map.classList.contains('map--faded')) ? mainPinTop + mainPinHeight / 2 : mainPinTop + mainPinHeight + mainPinPointerSize.height);
+
+  const mainPinPointerPosition = [positionX, positionY];
+
+  return mainPinPointerPosition;
+};
+
+const fillAddressField = () => {
+  adFormAddressField.disabled = true;
+  adFormAddressField.value = getMainPinPointerPosition();
+};
+
+const guestsNumberValidation = () => {
+
+  if (roomNumberSelect.value !== '100' && guestNumberSelect.value > roomNumberSelect.value) {
+    guestNumberSelect.setCustomValidity('Гостей не должно быть больше количества комнат');
+  } else if (roomNumberSelect.value === '100' && guestNumberSelect.value !== '0') {
+    guestNumberSelect.setCustomValidity('100 комнат недоступны для гостей');
+  } else if (roomNumberSelect.value !== '100' && guestNumberSelect.value === '0') {
+    guestNumberSelect.setCustomValidity('Укажите количество гостей');
+  } else {
+    guestNumberSelect.setCustomValidity('');
+  }
+  return guestNumberSelect.reportValidity();
+};
+
+// Events
+
+mainMapPin.addEventListener('keydown', onMainMapPinEnterPress);
+mainMapPin.addEventListener('mousedown', onMainMapPinMouseDown);
+guestNumberSelect.addEventListener('change', guestsNumberValidation);
+
+// Main
+
 const generatedAds = createAds();
-mapPins.appendChild(createPinsFragment(generatedAds));
-mapFilters.insertAdjacentElement('beforebegin', createAdCard(generatedAds[0]));
+toggleDisableAttrForElements(adFormFieldsets, true);
+toggleDisableAttrForElements(mapFiltersFormElements, true);
+adFormAddressField.value = getMainPinPointerPosition();
