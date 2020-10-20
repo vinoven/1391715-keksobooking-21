@@ -102,6 +102,8 @@ const guestNumberSelect = adForm.querySelector('#capacity');
 const roomNumberSelect = adForm.querySelector('#room_number');
 const roomTypeSelect = adForm.querySelector('#type');
 const roomPriceSelect = adForm.querySelector('#price');
+const timeInSelect = adForm.querySelector('#timein');
+const timeOutSelect = adForm.querySelector('#timeout');
 
 const getAvatarLink = (advertisementCounter) => {
   let avatarCounter = ('0' + advertisementCounter);
@@ -369,12 +371,22 @@ const roomMinPriceValidation = () => {
   roomPriceSelect.placeholder = ROOM_TYPE_PRICE_MAPPING[roomType];
 };
 
+const timeInValidation = () => {
+  timeOutSelect.value = timeInSelect.value;
+};
+
+const timeOutValidation = () => {
+  timeInSelect.value = timeOutSelect.value;
+};
+
 // Events
 
 mainMapPin.addEventListener('keydown', onMainMapPinEnterPress);
 mainMapPin.addEventListener('mousedown', onMainMapPinMouseDown);
 guestNumberSelect.addEventListener('change', guestsNumberValidation);
 roomTypeSelect.addEventListener('change', roomMinPriceValidation);
+timeInSelect.addEventListener('change', timeInValidation);
+timeOutSelect.addEventListener('change', timeOutValidation);
 
 // Main
 
