@@ -32,6 +32,13 @@ const TYPE_MAPPING = {
   bungalow: 'Бунгало'
 };
 
+const ROOM_TYPE_PRICE_MAPPING = {
+  palace: 10000,
+  flat: 5000,
+  house: 1000,
+  bungalow: 10
+};
+
 const ROOM_OPACITY_LIST = [
   1,
   2,
@@ -93,6 +100,8 @@ const adFormAddressField = adForm.querySelector('#address');
 const mapFiltersFormElements = mapFilters.querySelector('.map__filters').children;
 const guestNumberSelect = adForm.querySelector('#capacity');
 const roomNumberSelect = adForm.querySelector('#room_number');
+const roomTypeSelect = adForm.querySelector('#type');
+const roomPriceSelect = adForm.querySelector('#price');
 
 const getAvatarLink = (advertisementCounter) => {
   let avatarCounter = ('0' + advertisementCounter);
@@ -354,11 +363,18 @@ const guestsNumberValidation = () => {
   return guestNumberSelect.reportValidity();
 };
 
+const roomMinPriceValidation = () => {
+  const roomType = roomTypeSelect.value;
+  roomPriceSelect.min = ROOM_TYPE_PRICE_MAPPING[roomType];
+  roomPriceSelect.placeholder = ROOM_TYPE_PRICE_MAPPING[roomType];
+};
+
 // Events
 
 mainMapPin.addEventListener('keydown', onMainMapPinEnterPress);
 mainMapPin.addEventListener('mousedown', onMainMapPinMouseDown);
 guestNumberSelect.addEventListener('change', guestsNumberValidation);
+roomTypeSelect.addEventListener('change', roomMinPriceValidation);
 
 // Main
 
