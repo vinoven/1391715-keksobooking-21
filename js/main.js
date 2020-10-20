@@ -347,7 +347,6 @@ const getMainPinPointerPosition = () => {
 };
 
 const fillAddressField = () => {
-  adFormAddressField.disabled = true;
   adFormAddressField.value = getMainPinPointerPosition();
 };
 
