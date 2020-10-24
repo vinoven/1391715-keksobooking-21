@@ -182,19 +182,20 @@ const createAds = () => {
   return ads;
 };
 
-const createPinElement = (element) => {
+const createPinElement = (element, counter) => {
   const pinElement = pinTemplate.cloneNode(true);
   pinElement.style.left = element.location.x + "px";
   pinElement.style.top = element.location.y + "px";
   pinElement.querySelector("img").src = element.author.avatar;
   pinElement.querySelector("img").alt = element.offer.title;
+  pinElement.dataset.adIndex = counter;
   return pinElement;
 };
 
 const createPinsFragment = (adsArray) => {
   let fragment = document.createDocumentFragment();
   for (let i = 0; i < adsArray.length; i++) {
-    fragment.appendChild(createPinElement(adsArray[i]));
+    fragment.appendChild(createPinElement(adsArray[i], i));
   }
   return fragment;
 };
@@ -406,11 +407,10 @@ const removeAdCard = () => {
 };
 
 const renderAdCard = (evt) => {
-  const mapPins = mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
   const pinTarget = evt.target.className === 'map__pin' ? evt.target : evt.target.parentElement;
-  const mapPinIndex = (Array.from(mapPins).indexOf(pinTarget));
+  const mapPinIndex = pinTarget.dataset.adIndex;
 
-  if (mapPinIndex >= 0) {
+  if (mapPinIndex) {
     removeAdCard();
     mapFilters.insertAdjacentElement('beforebegin', createAdCard(generatedAds[mapPinIndex]));
     const currentCard = map.querySelector('.map__card');
