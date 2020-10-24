@@ -84,6 +84,10 @@ const MAX_LOCATION_X = 1200;
 const MIN_LOCATION_Y = 130;
 const MAX_LOCATION_Y = 630;
 
+const MOUSE_MAIN_BUTTON_CODE = 0;
+const ENTER_KEY_CODE = 13;
+const ESCAPE_KEY_CODE = 27;
+
 const pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 const mapFilters = document.querySelector('.map__filters-container');
 const mapPinsContainer = document.querySelector('.map__pins');
@@ -328,19 +332,19 @@ const renderPins = () => {
 };
 
 const onMainMapPinMouseDown = (evt) => {
-  if (evt.button === 0) {
+  if (evt.button === MOUSE_MAIN_BUTTON_CODE) {
     activatePage();
   }
 };
 
 const onMainMapPinEnterPress = (evt) => {
-  if (evt.key === 'Enter') {
+  if (evt.keyCode === ENTER_KEY_CODE) {
     activatePage();
   }
 };
 
 const onMapPinEnterPress = (evt) => {
-  if (evt.keyCode === '13') {
+  if (evt.keyCode === ENTER_KEY_CODE) {
     renderAdCard();
   }
 };
@@ -423,7 +427,7 @@ const onCloseButtonClick = (evt) => {
 };
 
 const onAdCardEscPress = (evt) => {
-  if (evt.key === 'Escape') {
+  if (evt.keyCode === ESCAPE_KEY_CODE) {
     removeAdCard();
   }
 };
