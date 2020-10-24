@@ -346,7 +346,7 @@ const onMainMapPinEnterPress = (evt) => {
 
 const onMapPinEnterPress = (evt) => {
   if (evt.keyCode === ENTER_KEY_CODE) {
-    renderAdCard();
+    renderAdCard(evt);
   }
 };
 
