@@ -32,6 +32,13 @@ const TYPE_MAPPING = {
   bungalow: 'Бунгало'
 };
 
+const ROOM_TYPE_PRICE_MAPPING = {
+  palace: 10000,
+  flat: 5000,
+  house: 1000,
+  bungalow: 10
+};
+
 const ROOM_OPACITY_LIST = [
   1,
   2,
@@ -77,10 +84,14 @@ const MAX_LOCATION_X = 1200;
 const MIN_LOCATION_Y = 130;
 const MAX_LOCATION_Y = 630;
 
+const MOUSE_MAIN_BUTTON_CODE = 0;
+const ENTER_KEY_CODE = 13;
+const ESCAPE_KEY_CODE = 27;
+
 const pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 const mapFilters = document.querySelector('.map__filters-container');
-const mapPins = document.querySelector('.map__pins');
-const mainMapPin = mapPins.querySelector('.map__pin--main');
+const mapPinsContainer = document.querySelector('.map__pins');
+const mainMapPin = mapPinsContainer.querySelector('.map__pin--main');
 const mainPinPointerSize = {
   width: 10,
   height: 22
@@ -93,6 +104,10 @@ const adFormAddressField = adForm.querySelector('#address');
 const mapFiltersFormElements = mapFilters.querySelector('.map__filters').children;
 const guestNumberSelect = adForm.querySelector('#capacity');
 const roomNumberSelect = adForm.querySelector('#room_number');
+const roomTypeSelect = adForm.querySelector('#type');
+const roomPriceSelect = adForm.querySelector('#price');
+const timeInSelect = adForm.querySelector('#timein');
+const timeOutSelect = adForm.querySelector('#timeout');
 
 const getAvatarLink = (advertisementCounter) => {
   let avatarCounter = ('0' + advertisementCounter);
@@ -167,19 +182,20 @@ const createAds = () => {
   return ads;
 };
 
-const createPinElement = (element) => {
+const createPinElement = (element, counter) => {
   const pinElement = pinTemplate.cloneNode(true);
   pinElement.style.left = element.location.x + "px";
   pinElement.style.top = element.location.y + "px";
   pinElement.querySelector("img").src = element.author.avatar;
   pinElement.querySelector("img").alt = element.offer.title;
+  pinElement.dataset.adIndex = counter;
   return pinElement;
 };
 
 const createPinsFragment = (adsArray) => {
   let fragment = document.createDocumentFragment();
   for (let i = 0; i < adsArray.length; i++) {
-    fragment.appendChild(createPinElement(adsArray[i]));
+    fragment.appendChild(createPinElement(adsArray[i], i));
   }
   return fragment;
 };
@@ -293,7 +309,7 @@ const createAdCard = (ad) => {
   return cardElement;
 };
 
-const toggleDisableAttrForElements = (elements, isDisabled) => {
+const toggleElementsState = (elements, isDisabled) => {
   for (let i = 0; i < elements.length; i++) {
     elements[i].disabled = isDisabled;
   }
@@ -302,22 +318,35 @@ const toggleDisableAttrForElements = (elements, isDisabled) => {
 const activatePage = () => {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  toggleDisableAttrForElements(adFormFieldsets, false);
-  toggleDisableAttrForElements(mapFiltersFormElements, false);
-  mapPins.appendChild(createPinsFragment(generatedAds));
-  mapFilters.insertAdjacentElement('beforebegin', createAdCard(generatedAds[0]));
+  toggleElementsState(adFormFieldsets, false);
+  toggleElementsState(mapFiltersFormElements, false);
+  renderPins();
   fillAddressField();
+  addMapPinsContainerListeners();
+};
+
+const renderPins = () => {
+  const mapPins = mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
+  if (mapPins.length === 0) {
+    mapPinsContainer.appendChild(createPinsFragment(generatedAds));
+  }
 };
 
 const onMainMapPinMouseDown = (evt) => {
-  if (evt.button === 0) {
+  if (evt.button === MOUSE_MAIN_BUTTON_CODE) {
     activatePage();
   }
 };
 
 const onMainMapPinEnterPress = (evt) => {
-  if (evt.key === 'Enter') {
+  if (evt.keyCode === ENTER_KEY_CODE) {
     activatePage();
+  }
+};
+
+const onMapPinEnterPress = (evt) => {
+  if (evt.keyCode === ENTER_KEY_CODE) {
+    renderAdCard(evt);
   }
 };
 
@@ -336,11 +365,10 @@ const getMainPinPointerPosition = () => {
 };
 
 const fillAddressField = () => {
-  adFormAddressField.disabled = true;
   adFormAddressField.value = getMainPinPointerPosition();
 };
 
-const guestsNumberValidation = () => {
+const validateGuestNumber = () => {
 
   if (roomNumberSelect.value !== '100' && guestNumberSelect.value > roomNumberSelect.value) {
     guestNumberSelect.setCustomValidity('Гостей не должно быть больше количества комнат');
@@ -354,15 +382,81 @@ const guestsNumberValidation = () => {
   return guestNumberSelect.reportValidity();
 };
 
-// Events
+const validateRoomMinPrice = () => {
+  const roomType = roomTypeSelect.value;
+  roomPriceSelect.min = ROOM_TYPE_PRICE_MAPPING[roomType];
+  roomPriceSelect.placeholder = ROOM_TYPE_PRICE_MAPPING[roomType];
+};
 
-mainMapPin.addEventListener('keydown', onMainMapPinEnterPress);
-mainMapPin.addEventListener('mousedown', onMainMapPinMouseDown);
-guestNumberSelect.addEventListener('change', guestsNumberValidation);
+const validateTimeIn = () => {
+  timeOutSelect.value = timeInSelect.value;
+};
+
+const validateTimeOut = () => {
+  timeInSelect.value = timeOutSelect.value;
+};
+
+const removeAdCard = () => {
+  const currentCard = map.querySelector('.map__card');
+
+  if (currentCard) {
+    currentCard.remove();
+  }
+
+  document.removeEventListener('keydown', onAdCardEscPress);
+};
+
+const renderAdCard = (evt) => {
+  const pinTarget = evt.target.className === 'map__pin' ? evt.target : evt.target.parentElement;
+  const mapPinIndex = pinTarget.dataset.adIndex;
+
+  if (mapPinIndex) {
+    removeAdCard();
+    mapFilters.insertAdjacentElement('beforebegin', createAdCard(generatedAds[mapPinIndex]));
+    const currentCard = map.querySelector('.map__card');
+    const adCloseButton = currentCard.querySelector('.popup__close');
+    adCloseButton.addEventListener('click', onCloseButtonClick);
+    document.addEventListener('keydown', onAdCardEscPress);
+  }
+};
+
+const onCloseButtonClick = (evt) => {
+  if (evt.target) {
+    removeAdCard();
+  }
+};
+
+const onAdCardEscPress = (evt) => {
+  if (evt.keyCode === ESCAPE_KEY_CODE) {
+    removeAdCard();
+  }
+};
+
+// EventListener functions
+
+const addMapPinsContainerListeners = () => {
+  mapPinsContainer.addEventListener('click', renderAdCard);
+  mapPinsContainer.addEventListener('keydown', onMapPinEnterPress);
+};
+
+
+const addAdFormListeners = () => {
+  guestNumberSelect.addEventListener('change', validateGuestNumber);
+  roomTypeSelect.addEventListener('change', validateRoomMinPrice);
+  timeInSelect.addEventListener('change', validateTimeIn);
+  timeOutSelect.addEventListener('change', validateTimeOut);
+};
+
+const addMainMapPinListeners = () => {
+  mainMapPin.addEventListener('keydown', onMainMapPinEnterPress);
+  mainMapPin.addEventListener('mousedown', onMainMapPinMouseDown);
+};
 
 // Main
+addAdFormListeners();
+addMainMapPinListeners();
 
 const generatedAds = createAds();
-toggleDisableAttrForElements(adFormFieldsets, true);
-toggleDisableAttrForElements(mapFiltersFormElements, true);
+toggleElementsState(adFormFieldsets, true);
+toggleElementsState(mapFiltersFormElements, true);
 adFormAddressField.value = getMainPinPointerPosition();
