@@ -115,30 +115,30 @@ const getAvatarLink = (advertisementCounter) => {
   return avatarLink;
 };
 
-const getRandomItemFromArray = (array) => {
-  const arrayItem = array[Math.floor(Math.random() * array.length)];
-  return arrayItem;
-};
+// const getRandomItemFromArray = (array) => {
+//   const arrayItem = array[Math.floor(Math.random() * array.length)];
+//   return arrayItem;
+// };
 
-const getMultipleRandomItemsFromArray = (array) => {
-  let generatedArray = [];
-  for (let i = 0; i < array.length; i++) {
-    let checker = Math.round(Math.random());
-    if (checker) {
-      generatedArray.push(array[i]);
-    }
-  }
-  return generatedArray;
-};
+// const getMultipleRandomItemsFromArray = (array) => {
+//   let generatedArray = [];
+//   for (let i = 0; i < array.length; i++) {
+//     let checker = Math.round(Math.random());
+//     if (checker) {
+//       generatedArray.push(array[i]);
+//     }
+//   }
+//   return generatedArray;
+// };
 
-const getRandomIntegerFromRange = (min, max) => {
-  return Math.round(Math.random() * (max - min) + min);
-};
+// const getRandomIntegerFromRange = (min, max) => {
+//   return Math.round(Math.random() * (max - min) + min);
+// };
 
 const getOfferLocation = () => {
   let offerLocation = [];
 
-  offerLocation = [getRandomIntegerFromRange(MIN_LOCATION_X, MAX_LOCATION_X), getRandomIntegerFromRange(MIN_LOCATION_Y, MAX_LOCATION_Y)];
+  offerLocation = [window.util.getRandomIntegerFromRange(MIN_LOCATION_X, MAX_LOCATION_X), window.util.getRandomIntegerFromRange(MIN_LOCATION_Y, MAX_LOCATION_Y)];
   return offerLocation;
 };
 
@@ -151,16 +151,16 @@ const createAd = (advertisementCounter) => {
     },
 
     offer: {
-      title: getRandomItemFromArray(TITLE_LIST),
+      title: window.util.getRandomItemFromArray(TITLE_LIST),
       address: offerLocation.join(', '),
-      price: getRandomIntegerFromRange(MIN_AD_PRICE, MAX_AD_PRICE),
-      type: getRandomItemFromArray(TYPE_LIST),
-      rooms: getRandomItemFromArray(ROOM_OPACITY_LIST),
-      guests: getRandomItemFromArray(GUEST_LIST),
-      checkin: getRandomItemFromArray(CHECK_TIME),
-      checkout: getRandomItemFromArray(CHECK_TIME),
-      features: getMultipleRandomItemsFromArray(FEATURES_LIST),
-      description: getRandomItemFromArray(DESCRIPTION_LIST),
+      price: window.util.getRandomIntegerFromRange(MIN_AD_PRICE, MAX_AD_PRICE),
+      type: window.util.getRandomItemFromArray(TYPE_LIST),
+      rooms: window.util.getRandomItemFromArray(ROOM_OPACITY_LIST),
+      guests: window.util.getRandomItemFromArray(GUEST_LIST),
+      checkin: window.util.getRandomItemFromArray(CHECK_TIME),
+      checkout: window.util.getRandomItemFromArray(CHECK_TIME),
+      features: window.util.getMultipleRandomItemsFromArray(FEATURES_LIST),
+      description: window.util.getRandomItemFromArray(DESCRIPTION_LIST),
       photos: PHOTO_LINK_LIST
     },
 
@@ -200,17 +200,17 @@ const createPinsFragment = (adsArray) => {
   return fragment;
 };
 
-const removeElements = (elements) => {
-  while (elements.length > 0) {
-    elements[0].remove();
-  }
-};
+// const removeElements = (elements) => {
+//   while (elements.length > 0) {
+//     elements[0].remove();
+//   }
+// };
 
 const fillCardFeatures = (ad, cardFeatures) => {
   const generatedFeatures = ad.offer.features;
   const defaultFeaturesElements = cardFeatures.children;
 
-  removeElements(defaultFeaturesElements);
+  window.util.removeElements(defaultFeaturesElements);
 
   for (let i = 0; i < generatedFeatures.length; i++) {
     cardFeatures.insertAdjacentHTML('beforeend', '<li></li>');
@@ -224,7 +224,7 @@ const fillCardPhotos = (ad, cardPhotos) => {
   const generatedPhotos = ad.offer.photos;
   const defaultPhotosElements = cardPhotos.children;
 
-  removeElements(defaultPhotosElements);
+  window.util.removeElements(defaultPhotosElements);
 
   for (let i = 0; i < generatedPhotos.length; i++) {
     cardPhotos.insertAdjacentHTML('beforeend', '<img src="" class="popup__photo" width="45" height="40" alt="Фотография жилья">');
@@ -309,17 +309,17 @@ const createAdCard = (ad) => {
   return cardElement;
 };
 
-const toggleElementsState = (elements, isDisabled) => {
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].disabled = isDisabled;
-  }
-};
+// const toggleElementsState = (elements, isDisabled) => {
+//   for (let i = 0; i < elements.length; i++) {
+//     elements[i].disabled = isDisabled;
+//   }
+// };
 
 const activatePage = () => {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  toggleElementsState(adFormFieldsets, false);
-  toggleElementsState(mapFiltersFormElements, false);
+  window.util.toggleElementsState(adFormFieldsets, false);
+  window.util.toggleElementsState(mapFiltersFormElements, false);
   renderPins();
   fillAddressField();
   addMapPinsContainerListeners();
@@ -457,6 +457,6 @@ addAdFormListeners();
 addMainMapPinListeners();
 
 const generatedAds = createAds();
-toggleElementsState(adFormFieldsets, true);
-toggleElementsState(mapFiltersFormElements, true);
+window.util.toggleElementsState(adFormFieldsets, true);
+window.util.toggleElementsState(mapFiltersFormElements, true);
 adFormAddressField.value = getMainPinPointerPosition();
