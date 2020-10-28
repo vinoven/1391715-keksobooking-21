@@ -4,7 +4,7 @@
   const MOUSE_MAIN_BUTTON_CODE = 0;
   const ENTER_KEY_CODE = 13;
   const mapPinsContainer = document.querySelector(`.map__pins`);
-
+  const map = document.querySelector(`.map`);
   const mainMapPin = mapPinsContainer.querySelector(`.map__pin--main`);
   const mainPinPointerSize = {
     width: 10,
@@ -92,7 +92,7 @@
     const mainPinTop = parseInt(getComputedStyle(mainMapPin).getPropertyValue(`top`), 10);
 
     const positionX = Math.round(mainPinLeft + mainPinWidth / 2);
-    const positionY = Math.round((window.elements.map.classList.contains(`map--faded`)) ? mainPinTop + mainPinHeight / 2 : mainPinTop + mainPinHeight + mainPinPointerSize.height);
+    const positionY = Math.round((map.classList.contains(`map--faded`)) ? mainPinTop + mainPinHeight / 2 : mainPinTop + mainPinHeight + mainPinPointerSize.height);
 
     const mainPinPointerPosition = [positionX, positionY];
 

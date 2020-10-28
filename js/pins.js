@@ -25,9 +25,10 @@
   };
 
   const renderPins = () => {
+    const generatedAds = window.data.createAds();
     const mapPins = mapPinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
     if (mapPins.length === 0) {
-      mapPinsContainer.appendChild(createPinsFragment(window.main.generatedAds));
+      mapPinsContainer.appendChild(createPinsFragment(generatedAds));
     }
   };
 
