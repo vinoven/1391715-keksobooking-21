@@ -15,6 +15,35 @@
     if (evt.button === MOUSE_MAIN_BUTTON_CODE) {
       window.main.activatePage();
     }
+
+    let startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    const onMouseMove = (moveEvt) => {
+      let shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      mainMapPin.style.left = (mainMapPin.offsetLeft - shift.x) + `px`;
+      mainMapPin.style.top = (mainMapPin.offsetTop - shift.y) + `px`;
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+    };
+
+    const onMouseUp = () => {
+      window.form.fillAddressField();
+      document.removeEventListener(`mousemove`, onMouseMove);
+      document.removeEventListener(`mouseup`, onMouseUp);
+    };
+
+    document.addEventListener(`mousemove`, onMouseMove);
+    document.addEventListener(`mouseup`, onMouseUp);
   };
 
   const onMainMapPinEnterPress = (evt) => {
