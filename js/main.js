@@ -13,7 +13,7 @@
   };
 
   window.form.addAdFormListeners();
-  window.pins.addMainMapPinListeners();
+  window.mainPin.addMainMapPinListeners();
 
   const generatedAds = window.data.createAds();
   window.util.toggleElementsState(window.form.adFormFieldsets, true);

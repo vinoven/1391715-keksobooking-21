@@ -18,7 +18,7 @@
   const timeOutSelect = adForm.querySelector(`#timeout`);
 
   const fillAddressField = () => {
-    adFormAddressField.value = window.pins.getMainPinPointerPosition();
+    adFormAddressField.value = window.mainPin.getMainPinPointerPosition();
   };
 
   const validateGuestNumber = () => {
