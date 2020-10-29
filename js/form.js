@@ -8,7 +8,6 @@
     bungalow: 10
   };
   const adForm = document.querySelector(`.ad-form`);
-  const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
   const adFormAddressField = adForm.querySelector(`#address`);
   const guestNumberSelect = adForm.querySelector(`#capacity`);
   const roomNumberSelect = adForm.querySelector(`#room_number`);
@@ -18,7 +17,7 @@
   const timeOutSelect = adForm.querySelector(`#timeout`);
 
   const fillAddressField = () => {
-    adFormAddressField.value = window.pins.getMainPinPointerPosition();
+    adFormAddressField.value = window.mainPin.getMainPinPointerPosition();
   };
 
   const validateGuestNumber = () => {
@@ -57,8 +56,6 @@
   };
 
   window.form = {
-    adForm,
-    adFormFieldsets,
     fillAddressField,
     addAdFormListeners
   };

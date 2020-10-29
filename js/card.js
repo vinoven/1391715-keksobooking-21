@@ -9,6 +9,9 @@
   };
   const ESCAPE_KEY_CODE = 27;
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+  const map = document.querySelector(`.map`);
+  const mapFilters = document.querySelector(`.map__filters-container`);
+  const generatedAds = window.data.createAds();
 
 
   const fillCardFeatures = (ad, cardFeatures) => {
@@ -120,8 +123,8 @@
 
     if (mapPinIndex) {
       removeAdCard();
-      window.elements.mapFilters.insertAdjacentElement(`beforebegin`, createAdCard(window.main.generatedAds[mapPinIndex])); // TODO generatedAds из main или в такой записи?
-      const currentCard = window.elements.map.querySelector(`.map__card`);
+      mapFilters.insertAdjacentElement(`beforebegin`, createAdCard(generatedAds[mapPinIndex]));
+      const currentCard = map.querySelector(`.map__card`);
       const adCloseButton = currentCard.querySelector(`.popup__close`);
       adCloseButton.addEventListener(`click`, onCloseButtonClick);
       document.addEventListener(`keydown`, onAdCardEscPress);
@@ -141,7 +144,7 @@
   };
 
   const removeAdCard = () => {
-    const currentCard = window.elements.map.querySelector(`.map__card`);
+    const currentCard = map.querySelector(`.map__card`);
 
     if (currentCard) {
       currentCard.remove();

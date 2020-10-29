@@ -1,27 +1,30 @@
 'use strict';
 
 (() => {
+  const map = document.querySelector(`.map`);
+  const mapFilters = document.querySelector(`.map__filters-container`);
+  const mapFiltersFormElements = mapFilters.querySelector(`.map__filters`).children;
+  const adForm = document.querySelector(`.ad-form`);
+  const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
 
   const activatePage = () => {
-    window.elements.map.classList.remove(`map--faded`);
-    window.form.adForm.classList.remove(`ad-form--disabled`);
-    window.util.toggleElementsState(window.form.adFormFieldsets, false);
-    window.util.toggleElementsState(window.elements.mapFiltersFormElements, false);
+    map.classList.remove(`map--faded`);
+    adForm.classList.remove(`ad-form--disabled`);
+    window.util.toggleElementsState(adFormFieldsets, false);
+    window.util.toggleElementsState(mapFiltersFormElements, false);
     window.pins.renderPins();
     window.form.fillAddressField();
     window.pins.addMapPinsContainerListeners();
   };
 
   window.form.addAdFormListeners();
-  window.pins.addMainMapPinListeners();
+  window.mainPin.addMainMapPinListeners();
 
-  const generatedAds = window.data.createAds();
-  window.util.toggleElementsState(window.form.adFormFieldsets, true);
-  window.util.toggleElementsState(window.elements.mapFiltersFormElements, true);
+  window.util.toggleElementsState(adFormFieldsets, true);
+  window.util.toggleElementsState(mapFiltersFormElements, true);
   window.form.fillAddressField();
 
   window.main = {
-    generatedAds,
     activatePage
   };
 })();
