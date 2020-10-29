@@ -40,8 +40,14 @@
         const mainMapPinMinPositionX = 0 - mainMapPinWidthHalfWidth;
         const mainMapPinMaxPositionX = mapPinsContainerWidth.slice(0, -2) - mainMapPinWidthHalfWidth;
 
-        const mainMapPinMinPositionY = 130;
-        const mainMapPinMaxPositionY = 630;
+        const mainMapPinMuffinHeight = window.getComputedStyle(mainMapPin).getPropertyValue(`height`).slice(0, -2);
+        const mapMainPinFullHeight = Number(mainMapPinMuffinHeight) + Number(mainPinPointerSize.height);
+
+        const mapPinsInnerContainerMinHeight = 130;
+        const mapPinsInnerContainerMaxHeight = 630;
+
+        const mainMapPinMinPositionY = mapPinsInnerContainerMinHeight - mapMainPinFullHeight;
+        const mainMapPinMaxPositionY = mapPinsInnerContainerMaxHeight - mapMainPinFullHeight;
 
 
         if (calculatedCoords.x < mainMapPinMinPositionX) {
