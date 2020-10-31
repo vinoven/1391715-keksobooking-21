@@ -25,11 +25,23 @@
   };
 
   const renderPins = () => {
-    const generatedAds = window.data.createAds();
+    // const generatedAds = window.data.createAds();
+    // const mapPins = mapPinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    // if (mapPins.length === 0) {
+    //   mapPinsContainer.appendChild(createPinsFragment(generatedAds));
+    // }
+    window.load(onSuccessHandler, onErrorHandler);
+  };
+
+  const onSuccessHandler = (pins) => {
     const mapPins = mapPinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
     if (mapPins.length === 0) {
-      mapPinsContainer.appendChild(createPinsFragment(generatedAds));
+      mapPinsContainer.appendChild(createPinsFragment(pins));
     }
+  };
+
+  const onErrorHandler = (message) => {
+    console.log(message);
   };
 
   const onMapPinEnterPress = (evt) => {
