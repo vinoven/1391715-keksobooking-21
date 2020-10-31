@@ -2,27 +2,39 @@
 
 (() => {
   const URL = `https://21.javascript.pages.academy/keksobooking/data`;
-  const statusCode = {
-    OK: 200
-  };
-  const TIMEOUT_IN_MS = 10000;
+
+  const TIMEOUT_IN_MS = 61;
 
   window.load = function (onSuccess, onError) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
 
     xhr.addEventListener(`load`, function () {
-      if (xhr.status === statusCode.OK) {
-        onSuccess(xhr.response);
-      } else {
-        onError(`Статус ответа: ` + xhr.status + ` ` + xhr.statusText);
+      switch (xhr.status) {
+        case 200:
+          onSuccess(xhr.response);
+          break;
+
+        case 400:
+          onError(`Неверный запрос`);
+          break;
+        case 401:
+          onError(`Ошибка авторизации`);
+          break;
+        case 404:
+          onError(`Ничего не найдено`);
+          break;
+
+        default:
+          onError(`Cтатус ответа: ` + xhr.status + ` ` + xhr.statusText);
       }
     });
+
     xhr.addEventListener(`error`, function () {
       onError(`Произошла ошибка соединения`);
     });
     xhr.addEventListener(`timeout`, function () {
-      onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+      onError(`Запрос не успел выполниться за ` + xhr.timeout + ` мс`);
     });
 
     xhr.timeout = TIMEOUT_IN_MS;

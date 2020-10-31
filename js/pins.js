@@ -41,7 +41,7 @@
   };
 
   const onErrorHandler = (message) => {
-    console.log(message);
+    window.errorMessage.render(message);
   };
 
   const onMapPinEnterPress = (evt) => {
