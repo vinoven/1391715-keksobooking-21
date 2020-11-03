@@ -89,7 +89,7 @@
 
   const onMainMapPinEnterPress = (evt) => {
     if (evt.keyCode === ENTER_KEY_CODE) {
-      window.main.activatePage();
+      window.main.activatePage(window.error.show);
     }
   };
 

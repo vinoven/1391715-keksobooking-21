@@ -7,24 +7,28 @@
   const adForm = document.querySelector(`.ad-form`);
   const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
 
+  const deactivatePage = () => {
+    window.util.toggleElementsState(adFormFieldsets, true);
+    window.util.toggleElementsState(mapFiltersFormElements, true);
+    window.load(window.error.show);
+  };
+
   const activatePage = () => {
     map.classList.remove(`map--faded`);
     adForm.classList.remove(`ad-form--disabled`);
     window.util.toggleElementsState(adFormFieldsets, false);
     window.util.toggleElementsState(mapFiltersFormElements, false);
-    window.pins.renderPins();
     window.form.fillAddressField();
-    window.pins.addMapPinsContainerListeners();
+
+    window.pins.render();
   };
 
-  window.form.addAdFormListeners();
+  deactivatePage();
   window.mainPin.addMainMapPinListeners();
-
-  window.util.toggleElementsState(adFormFieldsets, true);
-  window.util.toggleElementsState(mapFiltersFormElements, true);
+  window.form.addAdFormListeners();
   window.form.fillAddressField();
 
   window.main = {
-    activatePage
+    'activatePage': activatePage
   };
 })();

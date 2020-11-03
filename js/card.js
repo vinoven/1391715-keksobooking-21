@@ -11,7 +11,6 @@
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
   const map = document.querySelector(`.map`);
   const mapFilters = document.querySelector(`.map__filters-container`);
-  const generatedAds = window.data.createAds();
 
 
   const fillCardFeatures = (ad, cardFeatures) => {
@@ -117,44 +116,39 @@
     return cardElement;
   };
 
-  const renderAdCard = (evt) => {
-    const pinTarget = evt.target.className === `map__pin` ? evt.target : evt.target.parentElement;
-    const mapPinIndex = pinTarget.dataset.adIndex;
-
-    if (mapPinIndex) {
-      removeAdCard();
-      mapFilters.insertAdjacentElement(`beforebegin`, createAdCard(generatedAds[mapPinIndex]));
-      const currentCard = map.querySelector(`.map__card`);
-      const adCloseButton = currentCard.querySelector(`.popup__close`);
-      adCloseButton.addEventListener(`click`, onCloseButtonClick);
-      document.addEventListener(`keydown`, onAdCardEscPress);
-    }
+  const renderAdCard = (pin) => {
+    removeAdCards();
+    mapFilters.insertAdjacentElement(`beforebegin`, createAdCard(pin));
+    const currentCard = map.querySelector(`.map__card`);
+    const adCloseButton = currentCard.querySelector(`.popup__close`);
+    adCloseButton.addEventListener(`click`, onCloseButtonClick);
+    document.addEventListener(`keydown`, onAdCardEscPress);
   };
 
   const onCloseButtonClick = (evt) => {
     if (evt.target) {
-      removeAdCard();
+      removeAdCards();
     }
   };
 
   const onAdCardEscPress = (evt) => {
     if (evt.keyCode === ESCAPE_KEY_CODE) {
-      removeAdCard();
+      removeAdCards();
     }
   };
 
-  const removeAdCard = () => {
-    const currentCard = map.querySelector(`.map__card`);
+  const removeAdCards = () => {
+    const adCards = map.querySelectorAll(`.map__card`);
 
-    if (currentCard) {
-      currentCard.remove();
+    if (adCards) {
+      adCards.forEach((card) => card.remove());
     }
 
     document.removeEventListener(`keydown`, onAdCardEscPress);
   };
 
   window.card = {
-    renderAdCard
+    'render': renderAdCard
   };
 
 })();

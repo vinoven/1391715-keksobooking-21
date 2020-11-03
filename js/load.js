@@ -3,16 +3,16 @@
 (() => {
   const URL = `https://21.javascript.pages.academy/keksobooking/data`;
 
-  const TIMEOUT_IN_MS = 61;
+  const TIMEOUT_IN_MS = 10000;
 
-  window.load = function (onSuccess, onError) {
+  window.load = function (onError) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
 
     xhr.addEventListener(`load`, function () {
       switch (xhr.status) {
         case 200:
-          onSuccess(xhr.response);
+          window.data.save(xhr.response);
           break;
 
         case 400:

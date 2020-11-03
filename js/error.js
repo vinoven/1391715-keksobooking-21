@@ -1,7 +1,7 @@
 'use strict';
 
 (() => {
-  const renderErrorMessage = (message) => {
+  const showErrorMessage = (message) => {
     const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
     const errorElement = errorTemplate.cloneNode(true);
     errorElement.querySelector(`.error__message`).textContent = message;
@@ -15,11 +15,10 @@
   const onErrorButtonClick = () => {
     const errorPopup = document.querySelector(`.error`);
     errorPopup.remove();
-    window.pins.renderPins();
   };
 
 
-  window.errorMessage = {
-    render: renderErrorMessage
+  window.error = {
+    show: showErrorMessage
   };
 })();
