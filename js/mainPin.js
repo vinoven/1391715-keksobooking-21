@@ -10,10 +10,12 @@
     width: 10,
     height: 22
   };
+  let isPageInactive = document.querySelector(`.map--faded`) ? true : false;
 
   const onMainMapPinMouseDown = (evt) => {
-    if (evt.button === MOUSE_MAIN_BUTTON_CODE) {
+    if (evt.button === MOUSE_MAIN_BUTTON_CODE && isPageInactive) {
       window.main.activatePage();
+      isPageInactive = false;
     }
 
     let startCoords = {
@@ -87,7 +89,7 @@
 
   const onMainMapPinEnterPress = (evt) => {
     if (evt.keyCode === ENTER_KEY_CODE) {
-      window.main.activatePage();
+      window.main.activatePage(window.error.show);
     }
   };
 
