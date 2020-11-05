@@ -117,7 +117,7 @@
   };
 
   const renderAdCard = (pin) => {
-    removeAdCards();
+    removeAdCard();
     mapFilters.insertAdjacentElement(`beforebegin`, createAdCard(pin));
     const currentCard = map.querySelector(`.map__card`);
     const adCloseButton = currentCard.querySelector(`.popup__close`);
@@ -127,21 +127,21 @@
 
   const onCloseButtonClick = (evt) => {
     if (evt.target) {
-      removeAdCards();
+      removeAdCard();
     }
   };
 
   const onAdCardEscPress = (evt) => {
     if (evt.keyCode === ESCAPE_KEY_CODE) {
-      removeAdCards();
+      removeAdCard();
     }
   };
 
-  const removeAdCards = () => {
-    const adCards = map.querySelectorAll(`.map__card`);
+  const removeAdCard = () => {
+    const adCard = map.querySelector(`.map__card`);
 
-    if (adCards) {
-      adCards.forEach((card) => card.remove());
+    if (adCard) {
+      adCard.remove();
     }
 
     document.removeEventListener(`keydown`, onAdCardEscPress);
