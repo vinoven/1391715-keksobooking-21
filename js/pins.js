@@ -45,7 +45,15 @@
     }
   };
 
+  const removePins = () => {
+    const mapPins = mapPinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    if (mapPins) {
+      mapPins.forEach((pin) => pin.remove());
+    }
+  };
+
   window.pins = {
-    'render': renderPins
+    'render': renderPins,
+    'remove': removePins
   };
 })();

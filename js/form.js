@@ -3,12 +3,13 @@
 (() => {
   const ROOM_TYPE_PRICE_MAPPING = {
     palace: 10000,
-    flat: 5000,
-    house: 1000,
-    bungalow: 10
+    flat: 1000,
+    house: 5000,
+    bungalow: 0
   };
   const adForm = document.querySelector(`.ad-form`);
   const adFormAddressField = adForm.querySelector(`#address`);
+  const adFormReset = adForm.querySelector(`.ad-form__reset`);
   const guestNumberSelect = adForm.querySelector(`#capacity`);
   const roomNumberSelect = adForm.querySelector(`#room_number`);
   const roomTypeSelect = adForm.querySelector(`#type`);
@@ -17,7 +18,7 @@
   const timeOutSelect = adForm.querySelector(`#timeout`);
 
   const fillAddressField = () => {
-    adFormAddressField.value = window.mainPin.getMainPinPointerPosition();
+    adFormAddressField.value = window.mainPin.getPointerPosition();
   };
 
   const validateGuestNumber = () => {
@@ -48,11 +49,32 @@
     timeInSelect.value = timeOutSelect.value;
   };
 
+  const resetAdForm = () => {
+    window.main.deactivatePage();
+    window.pins.remove();
+    window.card.remove();
+    window.mainPin.resetPosition();
+    adForm.reset();
+    validateRoomMinPrice();
+    fillAddressField();
+  };
+
+  const submitAdForm = (evt) => {
+    const formData = new FormData(adForm);
+    window.request.upload(formData, window.message.success, window.message.error);
+    resetAdForm();
+
+    evt.preventDefault();
+
+  };
+
   const addAdFormListeners = () => {
+    adForm.addEventListener(`submit`, submitAdForm);
     guestNumberSelect.addEventListener(`change`, validateGuestNumber);
     roomTypeSelect.addEventListener(`change`, validateRoomMinPrice);
     timeInSelect.addEventListener(`change`, validateTimeIn);
     timeOutSelect.addEventListener(`change`, validateTimeOut);
+    adFormReset.addEventListener(`click`, resetAdForm);
   };
 
   window.form = {

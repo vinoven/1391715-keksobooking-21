@@ -1,18 +1,20 @@
 'use strict';
 
 (() => {
-  const URL = `https://21.javascript.pages.academy/keksobooking/data`;
-
+  const LOAD_URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const UPLOAD_URL = `https://21.javascript.pages.academy/keksobooking`;
   const TIMEOUT_IN_MS = 10000;
 
-  window.load = (onError) => {
+  const createRequest = (method, URL, onSuccess, onError) => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
+    xhr.timeout = TIMEOUT_IN_MS;
+    xhr.open(method, URL);
 
     xhr.addEventListener(`load`, () => {
       switch (xhr.status) {
         case 200:
-          window.data.save(xhr.response);
+          onSuccess(xhr.response);
           break;
 
         case 400:
@@ -37,10 +39,23 @@
       onError(`Запрос не успел выполниться за ` + xhr.timeout + ` мс`);
     });
 
-    xhr.timeout = TIMEOUT_IN_MS;
+    return xhr;
+  };
 
-    xhr.open(`GET`, URL);
+  const load = (onSuccess, onError) => {
+    const xhr = createRequest(`GET`, LOAD_URL, onSuccess, onError);
+
     xhr.send();
   };
 
+  const upload = (data, onSuccess, onError) => {
+    const xhr = createRequest(`POST`, UPLOAD_URL, onSuccess, onError);
+
+    xhr.send(data);
+  };
+
+  window.request = {
+    'load': load,
+    'upload': upload
+  };
 })();
