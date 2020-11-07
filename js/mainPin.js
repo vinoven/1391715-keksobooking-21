@@ -3,6 +3,10 @@
 (() => {
   const MOUSE_MAIN_BUTTON_CODE = 0;
   const ENTER_KEY_CODE = 13;
+  const MAIN_PIN_DEFAULT_POSITION = {
+    'top': `375px`,
+    'left': `570px`
+  };
   const mapPinsContainer = document.querySelector(`.map__pins`);
   const map = document.querySelector(`.map`);
   const mainMapPin = mapPinsContainer.querySelector(`.map__pin--main`);
@@ -10,12 +14,11 @@
     width: 10,
     height: 22
   };
-  let isPageInactive = document.querySelector(`.map--faded`) ? true : false;
+
 
   const onMainMapPinMouseDown = (evt) => {
-    if (evt.button === MOUSE_MAIN_BUTTON_CODE && isPageInactive) {
+    if (evt.button === MOUSE_MAIN_BUTTON_CODE) {
       window.main.activatePage();
-      isPageInactive = false;
     }
 
     let startCoords = {
@@ -89,7 +92,7 @@
 
   const onMainMapPinEnterPress = (evt) => {
     if (evt.keyCode === ENTER_KEY_CODE) {
-      window.main.activatePage(window.error.show);
+      window.main.activatePage(window.message.error);
     }
   };
 
@@ -107,14 +110,20 @@
     return mainPinPointerPosition;
   };
 
+  const resetMainPinPositionToDefault = () => {
+    mainMapPin.style.left = MAIN_PIN_DEFAULT_POSITION.left;
+    mainMapPin.style.top = MAIN_PIN_DEFAULT_POSITION.top;
+  };
+
   const addMainMapPinListeners = () => {
     mainMapPin.addEventListener(`keydown`, onMainMapPinEnterPress);
     mainMapPin.addEventListener(`mousedown`, onMainMapPinMouseDown);
   };
 
   window.mainPin = {
-    getMainPinPointerPosition,
-    addMainMapPinListeners
+    'getPointerPosition': getMainPinPointerPosition,
+    'resetPosition': resetMainPinPositionToDefault,
+    'addListeners': addMainMapPinListeners
   };
 
 })();

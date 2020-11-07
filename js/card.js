@@ -148,7 +148,8 @@
   };
 
   window.card = {
-    'render': renderAdCard
+    'render': renderAdCard,
+    'remove': removeAdCard
   };
 
 })();

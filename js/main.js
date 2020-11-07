@@ -8,9 +8,20 @@
   const adFormFieldsets = adForm.querySelectorAll(`fieldset`);
 
   const deactivatePage = () => {
+    const isMapFaded = map.classList.contains(`map--faded`);
+    const isAdFormDisabled = adForm.classList.contains(`ad-form--disabled`);
+
+    if (!isMapFaded) {
+      map.classList.add(`map--faded`);
+    }
+
+    if (!isAdFormDisabled) {
+      adForm.classList.add(`ad-form--disabled`);
+    }
+
+    adForm.classList.add(`ad-form--disabled`);
     window.util.toggleElementsState(adFormFieldsets, true);
     window.util.toggleElementsState(mapFiltersFormElements, true);
-    window.load(window.error.show);
   };
 
   const activatePage = () => {
@@ -19,16 +30,17 @@
     window.util.toggleElementsState(adFormFieldsets, false);
     window.util.toggleElementsState(mapFiltersFormElements, false);
     window.form.fillAddressField();
-
     window.pins.render();
   };
 
   deactivatePage();
-  window.mainPin.addMainMapPinListeners();
+  window.request.load(window.data.save, window.message.error);
+  window.mainPin.addListeners();
   window.form.addAdFormListeners();
   window.form.fillAddressField();
 
   window.main = {
-    'activatePage': activatePage
+    'activatePage': activatePage,
+    'deactivatePage': deactivatePage
   };
 })();
