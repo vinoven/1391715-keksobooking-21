@@ -23,6 +23,7 @@
     window.util.toggleElementsState(adFormFieldsets, true);
     window.filter.deactivate();
     window.mainPin.addListeners();
+    window.form.fillAddressField();
   };
 
   const activatePage = () => {
@@ -39,7 +40,6 @@
   deactivatePage();
   window.request.load(window.data.save, window.message.error);
   window.form.addAdFormListeners();
-  window.form.fillAddressField();
 
   window.main = {
     'activatePage': activatePage,
