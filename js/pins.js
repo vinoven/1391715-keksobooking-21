@@ -7,6 +7,7 @@
     'width': 50,
     'height': 70
   };
+  const MAX_ADS_COUNT = 5;
 
 
   const createPinElement = (element, counter) => {
@@ -30,19 +31,17 @@
   };
 
   const createPinsFragment = (ads) => {
+    const counter = ads.length <= MAX_ADS_COUNT ? ads.length : MAX_ADS_COUNT;
     let fragment = document.createDocumentFragment();
-    for (let i = 0; i < ads.length; i++) {
+    for (let i = 0; i < counter; i++) {
       fragment.appendChild(createPinElement(ads[i], i));
     }
     return fragment;
   };
 
-  const renderPins = () => {
-    const ads = window.data.get();
-    const mapPins = mapPinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-    if (mapPins.length === 0) {
-      mapPinsContainer.appendChild(createPinsFragment(ads));
-    }
+  const renderPins = (ads) => {
+    removePins();
+    mapPinsContainer.appendChild(createPinsFragment(ads));
   };
 
   const removePins = () => {

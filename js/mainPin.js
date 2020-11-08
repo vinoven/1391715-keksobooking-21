@@ -15,11 +15,13 @@
     height: 22
   };
 
-
-  const onMainMapPinMouseDown = (evt) => {
+  const onMainMapPinMouseDownToActivate = (evt) => {
     if (evt.button === MOUSE_MAIN_BUTTON_CODE) {
       window.main.activatePage();
     }
+  };
+
+  const onMainMapPinMouseDownToMove = (evt) => {
 
     let startCoords = {
       x: evt.clientX,
@@ -90,9 +92,9 @@
     document.addEventListener(`mouseup`, onMouseUp);
   };
 
-  const onMainMapPinEnterPress = (evt) => {
+  const onMainMapPinEnterPressToActivate = (evt) => {
     if (evt.keyCode === ENTER_KEY_CODE) {
-      window.main.activatePage(window.message.error);
+      window.main.activatePage();
     }
   };
 
@@ -116,14 +118,21 @@
   };
 
   const addMainMapPinListeners = () => {
-    mainMapPin.addEventListener(`keydown`, onMainMapPinEnterPress);
-    mainMapPin.addEventListener(`mousedown`, onMainMapPinMouseDown);
+    mainMapPin.addEventListener(`mousedown`, onMainMapPinMouseDownToActivate);
+    mainMapPin.addEventListener(`keydown`, onMainMapPinEnterPressToActivate);
   };
 
+  const removeMainMapPinListeners = () => {
+    mainMapPin.removeEventListener(`mousedown`, onMainMapPinMouseDownToActivate);
+    mainMapPin.removeEventListener(`keydown`, onMainMapPinEnterPressToActivate);
+  };
+
+  mainMapPin.addEventListener(`mousedown`, onMainMapPinMouseDownToMove);
   window.mainPin = {
     'getPointerPosition': getMainPinPointerPosition,
     'resetPosition': resetMainPinPositionToDefault,
-    'addListeners': addMainMapPinListeners
+    'addListeners': addMainMapPinListeners,
+    'removeListeners': removeMainMapPinListeners
   };
 
 })();

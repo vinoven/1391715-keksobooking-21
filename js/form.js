@@ -65,7 +65,6 @@
     resetAdForm();
 
     evt.preventDefault();
-
   };
 
   const addAdFormListeners = () => {
