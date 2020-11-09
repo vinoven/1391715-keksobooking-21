@@ -1,13 +1,13 @@
 'use strict';
 
 (() => {
+  const MAX_ADS_COUNT = 5;
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const mapPinsContainer = document.querySelector(`.map__pins`);
   const pinSize = {
     'width': 50,
     'height': 70
   };
-  const MAX_ADS_COUNT = 5;
 
 
   const createPinElement = (element, counter) => {
