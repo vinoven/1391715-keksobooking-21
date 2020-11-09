@@ -48,20 +48,20 @@
     return xhr;
   };
 
-  const load = (onSuccess, onError) => {
+  const loadData = (onSuccess, onError) => {
     const xhr = createRequest(`GET`, LOAD_URL, onSuccess, onError);
 
     xhr.send();
   };
 
-  const upload = (data, onSuccess, onError) => {
+  const uploadData = (data, onSuccess, onError) => {
     const xhr = createRequest(`POST`, UPLOAD_URL, onSuccess, onError);
 
     xhr.send(data);
   };
 
   window.request = {
-    'load': load,
-    'upload': upload
+    'load': loadData,
+    'upload': uploadData
   };
 })();
