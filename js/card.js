@@ -139,9 +139,14 @@
 
   const removeAdCard = () => {
     const adCard = map.querySelector(`.map__card`);
+    const activePin = map.querySelector(`.map__pin--active`);
 
     if (adCard) {
       adCard.remove();
+    }
+
+    if (activePin) {
+      activePin.classList.remove(`map__pin--active`);
     }
 
     document.removeEventListener(`keydown`, onAdCardEscPress);

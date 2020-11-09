@@ -50,22 +50,23 @@
   };
 
   const resetAdForm = () => {
-    window.main.deactivatePage();
     window.pins.remove();
     window.card.remove();
     window.mainPin.resetPosition();
-    adForm.reset();
     validateRoomMinPrice();
-    fillAddressField();
+    adForm.reset();
+    window.main.deactivatePage();
+  };
+
+  const onSubmitSuccess = (message) => {
+    window.message.success(message);
+    resetAdForm();
   };
 
   const submitAdForm = (evt) => {
     const formData = new FormData(adForm);
-    window.request.upload(formData, window.message.success, window.message.error);
-    resetAdForm();
-
+    window.request.upload(formData, onSubmitSuccess, window.message.error);
     evt.preventDefault();
-
   };
 
   const addAdFormListeners = () => {
@@ -78,7 +79,8 @@
   };
 
   window.form = {
-    fillAddressField,
-    addAdFormListeners
+    'fillAddressField': fillAddressField,
+    'addAdFormListeners': addAdFormListeners,
+    'resetAdForm': resetAdForm
   };
 })();

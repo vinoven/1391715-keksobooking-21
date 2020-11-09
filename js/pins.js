@@ -1,6 +1,7 @@
 'use strict';
 
 (() => {
+  const MAX_ADS_COUNT = 5;
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const mapPinsContainer = document.querySelector(`.map__pins`);
   const pinSize = {
@@ -22,6 +23,7 @@
       const mapPinIndex = pinTarget.dataset.adIndex;
       if (mapPinIndex) {
         window.card.render(element);
+        pinTarget.classList.add(`map__pin--active`);
       }
     }
     );
@@ -30,19 +32,17 @@
   };
 
   const createPinsFragment = (ads) => {
+    const counter = ads.length <= MAX_ADS_COUNT ? ads.length : MAX_ADS_COUNT;
     let fragment = document.createDocumentFragment();
-    for (let i = 0; i < ads.length; i++) {
+    for (let i = 0; i < counter; i++) {
       fragment.appendChild(createPinElement(ads[i], i));
     }
     return fragment;
   };
 
-  const renderPins = () => {
-    const ads = window.data.get();
-    const mapPins = mapPinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-    if (mapPins.length === 0) {
-      mapPinsContainer.appendChild(createPinsFragment(ads));
-    }
+  const renderPins = (ads) => {
+    removePins();
+    mapPinsContainer.appendChild(createPinsFragment(ads));
   };
 
   const removePins = () => {
