@@ -23,6 +23,7 @@
       const mapPinIndex = pinTarget.dataset.adIndex;
       if (mapPinIndex) {
         window.card.render(element);
+        pinTarget.classList.add(`map__pin--active`);
       }
     }
     );
