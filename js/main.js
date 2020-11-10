@@ -19,7 +19,6 @@
 
     adForm.classList.add(`ad-form--disabled`);
     window.util.toggleElementsState(adFormFieldsets, true);
-    window.filter.reset();
     window.filter.deactivate();
     window.mainPin.addListeners();
     window.form.fillAddressField();

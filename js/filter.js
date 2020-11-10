@@ -25,11 +25,8 @@
   };
 
   const deactivateFilters = () => {
-    window.util.toggleElementsState(mapFiltersFormElements, true);
-  };
-
-  const resetFilters = () => {
     mapFilters.reset();
+    window.util.toggleElementsState(mapFiltersFormElements, true);
   };
 
   const filterByType = (ad) => {
@@ -96,7 +93,6 @@
 
   window.filter = {
     'activate': activateFilters,
-    'deactivate': deactivateFilters,
-    'reset': resetFilters
+    'deactivate': deactivateFilters
   };
 })();
