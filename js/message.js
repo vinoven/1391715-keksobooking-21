@@ -32,6 +32,7 @@
 
     const errorButton = document.querySelector(`.error__button`);
     errorButton.addEventListener(`click`, closeErrorMessage);
+    document.addEventListener(`click`, closeErrorMessage);
     document.addEventListener(`keydown`, closeErrorMessage);
   };
 
@@ -39,6 +40,7 @@
     if (evt.keyCode === ESCAPE_KEY_CODE || evt.button === MOUSE_MAIN_BUTTON_CODE) {
       document.querySelector(`.error`).remove();
       document.removeEventListener(`keydown`, closeErrorMessage);
+      document.removeEventListener(`click`, closeErrorMessage);
     }
   };
 
