@@ -35,7 +35,9 @@
     const counter = ads.length <= MAX_ADS_COUNT ? ads.length : MAX_ADS_COUNT;
     let fragment = document.createDocumentFragment();
     for (let i = 0; i < counter; i++) {
-      fragment.appendChild(createPinElement(ads[i], i));
+      if (ads[i].offer) {
+        fragment.appendChild(createPinElement(ads[i], i));
+      }
     }
     return fragment;
   };
