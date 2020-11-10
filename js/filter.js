@@ -25,9 +25,11 @@
   };
 
   const deactivateFilters = () => {
-
     window.util.toggleElementsState(mapFiltersFormElements, true);
+  };
 
+  const resetFilters = () => {
+    mapFilters.reset();
   };
 
   const filterByType = (ad) => {
@@ -94,6 +96,7 @@
 
   window.filter = {
     'activate': activateFilters,
-    'deactivate': deactivateFilters
+    'deactivate': deactivateFilters,
+    'reset': resetFilters
   };
 })();
