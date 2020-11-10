@@ -79,7 +79,7 @@
     return chosenFeatures;
   };
 
-  const applyFilter = () => {
+  const applyFilter = window.debounce(() => {
     const ads = window.data.get();
 
     const filteredAds = ads.filter((ad) => {
@@ -88,7 +88,7 @@
     window.card.remove();
     window.pins.remove();
     window.pins.render(filteredAds);
-  };
+  });
 
   mapFilters.addEventListener(`change`, applyFilter);
 
