@@ -94,7 +94,6 @@
 
   window.filter = {
     'activate': activateFilters,
-    'deactivate': deactivateFilters,
-    'features': filterByFeatures
+    'deactivate': deactivateFilters
   };
 })();

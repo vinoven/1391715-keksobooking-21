@@ -80,7 +80,6 @@
 
   window.form = {
     'fillAddressField': fillAddressField,
-    'addAdFormListeners': addAdFormListeners,
-    'resetAdForm': resetAdForm
+    'addListeners': addAdFormListeners,
   };
 })();

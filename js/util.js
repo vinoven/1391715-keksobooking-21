@@ -34,10 +34,10 @@
   };
 
   window.util = {
-    getRandomItemFromArray,
-    getMultipleRandomItemsFromArray,
-    getRandomIntegerFromRange,
-    removeElements,
-    toggleElementsState
+    'getRandomItemFromArray': getRandomItemFromArray,
+    'getMultipleRandomItemsFromArray': getMultipleRandomItemsFromArray,
+    'getRandomIntegerFromRange': getRandomIntegerFromRange,
+    'removeElements': removeElements,
+    'toggleElementsState': toggleElementsState
   };
 })();

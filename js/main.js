@@ -37,7 +37,7 @@
 
   deactivatePage();
   window.request.load(window.data.save, window.message.error);
-  window.form.addAdFormListeners();
+  window.form.addListeners();
 
   window.main = {
     'activatePage': activatePage,
