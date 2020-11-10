@@ -78,8 +78,18 @@
     adFormReset.addEventListener(`click`, resetAdForm);
   };
 
+  const removeAdFormListeners = () => {
+    adForm.removeEventListener(`submit`, submitAdForm);
+    guestNumberSelect.removeEventListener(`change`, validateGuestNumber);
+    roomTypeSelect.removeEventListener(`change`, validateRoomMinPrice);
+    timeInSelect.removeEventListener(`change`, validateTimeIn);
+    timeOutSelect.removeEventListener(`change`, validateTimeOut);
+    adFormReset.removeEventListener(`click`, resetAdForm);
+  };
+
   window.form = {
     'fillAddressField': fillAddressField,
     'addListeners': addAdFormListeners,
+    'removeListeners': removeAdFormListeners
   };
 })();
