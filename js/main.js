@@ -29,8 +29,8 @@
     adForm.classList.remove(`ad-form--disabled`);
     window.util.toggleElementsState(adFormFieldsets, false);
     window.form.fillAddressField();
-    window.filter.activate();
     window.pins.render(window.data.get());
+    window.filter.activate();
     window.mainPin.removeListeners();
 
   };
