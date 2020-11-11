@@ -69,22 +69,46 @@
     evt.preventDefault();
   };
 
+  const onAdFormSubmit = (evt) => {
+    submitAdForm(evt);
+  };
+
+  const onGusetSelectChange = () => {
+    validateGuestNumber();
+  };
+
+  const onRoomTypeSelectChange = () => {
+    validateRoomMinPrice();
+  };
+
+  const onTimeInSelectChange = () => {
+    validateTimeIn();
+  };
+
+  const onTimeOutSelectChange = () => {
+    validateTimeOut();
+  };
+
+  const onAdFormResetButtonClick = () => {
+    resetAdForm();
+  };
+
   const addAdFormListeners = () => {
-    adForm.addEventListener(`submit`, submitAdForm);
-    guestNumberSelect.addEventListener(`change`, validateGuestNumber);
-    roomTypeSelect.addEventListener(`change`, validateRoomMinPrice);
-    timeInSelect.addEventListener(`change`, validateTimeIn);
-    timeOutSelect.addEventListener(`change`, validateTimeOut);
-    adFormReset.addEventListener(`click`, resetAdForm);
+    adForm.addEventListener(`submit`, onAdFormSubmit);
+    guestNumberSelect.addEventListener(`change`, onGusetSelectChange);
+    roomTypeSelect.addEventListener(`change`, onRoomTypeSelectChange);
+    timeInSelect.addEventListener(`change`, onTimeInSelectChange);
+    timeOutSelect.addEventListener(`change`, onTimeOutSelectChange);
+    adFormReset.addEventListener(`click`, onAdFormResetButtonClick);
   };
 
   const removeAdFormListeners = () => {
-    adForm.removeEventListener(`submit`, submitAdForm);
-    guestNumberSelect.removeEventListener(`change`, validateGuestNumber);
-    roomTypeSelect.removeEventListener(`change`, validateRoomMinPrice);
-    timeInSelect.removeEventListener(`change`, validateTimeIn);
-    timeOutSelect.removeEventListener(`change`, validateTimeOut);
-    adFormReset.removeEventListener(`click`, resetAdForm);
+    adForm.removeEventListener(`submit`, onAdFormSubmit);
+    guestNumberSelect.removeEventListener(`change`, onGusetSelectChange);
+    roomTypeSelect.removeEventListener(`change`, onRoomTypeSelectChange);
+    timeInSelect.removeEventListener(`change`, onTimeInSelectChange);
+    timeOutSelect.removeEventListener(`change`, onTimeOutSelectChange);
+    adFormReset.removeEventListener(`click`, onAdFormResetButtonClick);
   };
 
   window.form = {

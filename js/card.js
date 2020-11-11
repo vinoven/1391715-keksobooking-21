@@ -121,8 +121,12 @@
     mapFilters.insertAdjacentElement(`beforebegin`, createAdCard(pin));
     const currentCard = map.querySelector(`.map__card`);
     const adCloseButton = currentCard.querySelector(`.popup__close`);
-    adCloseButton.addEventListener(`click`, removeAdCard);
+    adCloseButton.addEventListener(`click`, onAdCardCloseButtonClick);
     document.addEventListener(`keydown`, onAdCardEscPress);
+  };
+
+  const onAdCardCloseButtonClick = () => {
+    removeAdCard();
   };
 
   const onAdCardEscPress = (evt) => {
