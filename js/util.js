@@ -1,20 +1,18 @@
 'use strict';
 
-(() => {
-  const removeElements = (elements) => {
-    while (elements.length > 0) {
-      elements[0].remove();
-    }
-  };
+const removeElements = (elements) => {
+  while (elements.length > 0) {
+    elements[0].remove();
+  }
+};
 
-  const toggleElementsState = (elements, isDisabled) => {
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].disabled = isDisabled;
-    }
-  };
+const toggleElementsState = (elements, isDisabled) => {
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].disabled = isDisabled;
+  }
+};
 
-  window.util = {
-    'removeElements': removeElements,
-    'toggleElementsState': toggleElementsState
-  };
-})();
+window.util = {
+  'removeElements': removeElements,
+  'toggleElementsState': toggleElementsState
+};
