@@ -25,9 +25,8 @@
   };
 
   const deactivateFilters = () => {
-
+    mapFilters.reset();
     window.util.toggleElementsState(mapFiltersFormElements, true);
-
   };
 
   const filterByType = (ad) => {
@@ -90,7 +89,11 @@
     window.pins.render(filteredAds);
   });
 
-  mapFilters.addEventListener(`change`, applyFilter);
+  const onMapFiltersChange = () => {
+    applyFilter();
+  };
+
+  mapFilters.addEventListener(`change`, onMapFiltersChange);
 
   window.filter = {
     'activate': activateFilters,

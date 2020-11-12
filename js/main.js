@@ -22,6 +22,7 @@
     window.filter.deactivate();
     window.mainPin.addListeners();
     window.form.fillAddressField();
+    window.form.removeListeners();
   };
 
   const activatePage = () => {
@@ -29,15 +30,14 @@
     adForm.classList.remove(`ad-form--disabled`);
     window.util.toggleElementsState(adFormFieldsets, false);
     window.form.fillAddressField();
-    window.filter.activate();
+    window.form.addListeners();
     window.pins.render(window.data.get());
+    window.filter.activate();
     window.mainPin.removeListeners();
-
   };
 
   deactivatePage();
   window.request.load(window.data.save, window.message.error);
-  window.form.addListeners();
 
   window.main = {
     'activatePage': activatePage,
