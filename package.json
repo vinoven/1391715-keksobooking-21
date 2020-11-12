@@ -19,7 +19,8 @@
   "license": "MIT",
   "dependencies": {},
   "scripts": {
-    "test": "eslint js/"
+    "test": "eslint js/",
+    "build": "webpack --mode production"
   },
   "engines": {
     "node": "8.11"
