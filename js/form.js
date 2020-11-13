@@ -57,6 +57,7 @@ const resetAdForm = () => {
   window.mainPin.resetPosition();
   validateRoomMinPrice();
   adForm.reset();
+  removeAdFormPhotos();
   window.main.deactivatePage();
 };
 
@@ -71,9 +72,22 @@ const submitAdForm = (evt) => {
   evt.preventDefault();
 };
 
+const createAdFormPhotoElement = (src) => {
+  const photoElement = document.createElement(`img`);
+  photoElement.classList.add(`js-housing-photo`);
+  photoElement.src = src;
+  photoElement.style.maxWidth = `100%`;
+
+  return photoElement;
+};
+
+const removeAdFormPhotos = () => {
+  const adFormPhotos = adFormPhotoPreview.querySelectorAll(`.js-housing-photo`);
+  adFormPhotos.forEach((photo) => photo.remove());
+};
+
 const addAdFormPhoto = (src) => {
-  adFormPhotoPreview.style.backgroundImage = `url(${src})`;
-  adFormPhotoPreview.style.backgroundSize = `100% 100%`;
+  adFormPhotoPreview.appendChild(createAdFormPhotoElement(src));
 };
 
 const onAdFormSubmit = (evt) => {
