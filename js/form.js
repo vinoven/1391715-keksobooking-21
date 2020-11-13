@@ -135,6 +135,7 @@ const removeAdFormListeners = () => {
   timeInSelect.removeEventListener(`change`, onTimeInSelectChange);
   timeOutSelect.removeEventListener(`change`, onTimeOutSelectChange);
   adFormReset.removeEventListener(`click`, onAdFormResetButtonClick);
+  adFormPhotoInput.removeEventListener(`change`, onAdFormPhotoInputChange);
 };
 
 window.form = {
