@@ -2,6 +2,7 @@ const path = require("path");
 
 module.exports = {
   entry: [
+    "./js/fileChooser.js",
     "./js/request.js",
     "./js/debounce.js",
     "./js/filter.js",

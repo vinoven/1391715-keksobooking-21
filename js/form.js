@@ -6,6 +6,7 @@ const ROOM_TYPE_PRICE_MAPPING = {
   house: 5000,
   bungalow: 0
 };
+const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 const adForm = document.querySelector(`.ad-form`);
 const adFormAddressField = adForm.querySelector(`#address`);
 const adFormReset = adForm.querySelector(`.ad-form__reset`);
@@ -15,6 +16,8 @@ const roomTypeSelect = adForm.querySelector(`#type`);
 const roomPriceSelect = adForm.querySelector(`#price`);
 const timeInSelect = adForm.querySelector(`#timein`);
 const timeOutSelect = adForm.querySelector(`#timeout`);
+const adFormPhotoInput = adForm.querySelector(`#images`);
+const adFormPhotoPreview = adForm.querySelector(`.ad-form__photo`);
 
 const fillAddressField = () => {
   adFormAddressField.value = window.mainPin.getPointerPosition();
@@ -68,6 +71,11 @@ const submitAdForm = (evt) => {
   evt.preventDefault();
 };
 
+const addAdFormPhoto = (src) => {
+  adFormPhotoPreview.style.backgroundImage = `url(${src})`;
+  adFormPhotoPreview.style.backgroundSize = `100% 100%`;
+};
+
 const onAdFormSubmit = (evt) => {
   submitAdForm(evt);
 };
@@ -92,6 +100,10 @@ const onAdFormResetButtonClick = () => {
   resetAdForm();
 };
 
+const onAdFormPhotoInputChange = () => {
+  window.fileChooser.process(adFormPhotoInput, FILE_TYPES, addAdFormPhoto);
+};
+
 const addAdFormListeners = () => {
   adForm.addEventListener(`submit`, onAdFormSubmit);
   guestNumberSelect.addEventListener(`change`, onGusetSelectChange);
@@ -99,6 +111,7 @@ const addAdFormListeners = () => {
   timeInSelect.addEventListener(`change`, onTimeInSelectChange);
   timeOutSelect.addEventListener(`change`, onTimeOutSelectChange);
   adFormReset.addEventListener(`click`, onAdFormResetButtonClick);
+  adFormPhotoInput.addEventListener(`change`, onAdFormPhotoInputChange);
 };
 
 const removeAdFormListeners = () => {
