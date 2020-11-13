@@ -18,6 +18,9 @@ const timeInSelect = adForm.querySelector(`#timein`);
 const timeOutSelect = adForm.querySelector(`#timeout`);
 const adFormPhotoInput = adForm.querySelector(`#images`);
 const adFormPhotoPreview = adForm.querySelector(`.ad-form__photo`);
+const adFormAvatarInput = adForm.querySelector(`#avatar`);
+const adFormAvatarPreview = adForm.querySelector(`.ad-form-header__preview img`);
+const adFormDefaultAvatarPreview = adFormAvatarPreview.src;
 
 const fillAddressField = () => {
   adFormAddressField.value = window.mainPin.getPointerPosition();
@@ -58,6 +61,7 @@ const resetAdForm = () => {
   validateRoomMinPrice();
   adForm.reset();
   removeAdFormPhotos();
+  resetAdFormAvatar();
   window.main.deactivatePage();
 };
 
@@ -86,8 +90,16 @@ const removeAdFormPhotos = () => {
   adFormPhotos.forEach((photo) => photo.remove());
 };
 
+const resetAdFormAvatar = () => {
+  adFormAvatarPreview.src = adFormDefaultAvatarPreview;
+};
+
 const addAdFormPhoto = (src) => {
   adFormPhotoPreview.appendChild(createAdFormPhotoElement(src));
+};
+
+const addAdFormAvatar = (src) => {
+  adFormAvatarPreview.src = src;
 };
 
 const onAdFormSubmit = (evt) => {
@@ -118,6 +130,10 @@ const onAdFormPhotoInputChange = () => {
   window.fileChooser.process(adFormPhotoInput, FILE_TYPES, addAdFormPhoto);
 };
 
+const onAdFormAvatarInputChange = () => {
+  window.fileChooser.process(adFormAvatarInput, FILE_TYPES, addAdFormAvatar);
+};
+
 const addAdFormListeners = () => {
   adForm.addEventListener(`submit`, onAdFormSubmit);
   guestNumberSelect.addEventListener(`change`, onGusetSelectChange);
@@ -126,6 +142,7 @@ const addAdFormListeners = () => {
   timeOutSelect.addEventListener(`change`, onTimeOutSelectChange);
   adFormReset.addEventListener(`click`, onAdFormResetButtonClick);
   adFormPhotoInput.addEventListener(`change`, onAdFormPhotoInputChange);
+  adFormAvatarInput.addEventListener(`change`, onAdFormAvatarInputChange);
 };
 
 const removeAdFormListeners = () => {
@@ -136,6 +153,7 @@ const removeAdFormListeners = () => {
   timeOutSelect.removeEventListener(`change`, onTimeOutSelectChange);
   adFormReset.removeEventListener(`click`, onAdFormResetButtonClick);
   adFormPhotoInput.removeEventListener(`change`, onAdFormPhotoInputChange);
+  adFormAvatarInput.removeEventListener(`change`, onAdFormAvatarInputChange);
 };
 
 window.form = {
